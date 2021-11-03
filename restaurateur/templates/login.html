@@ -1,0 +1,40 @@
+{% extends 'base_restaurateur_page.html' %}
+
+{% block header_nav %}{% endblock %}
+
+{% block title %}Авторизация | Star Burger{% endblock %}
+
+
+{% block content %}
+  <br/>
+  <br/>
+  <br/>
+
+  <center>
+    <h2>Авторизация</h2>
+
+    <hr/>
+
+    <div class="row">
+      <div class="col-sm-4 col-md-4 col-lg-4"></div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <form method="post">
+          {% csrf_token %}
+
+          {{ form.non_field_errors }}
+
+          {% if ivalid %}
+            <div class="alert alert-danger" role="alert">Неверный логин / пароль.</div>
+          {% endif %}
+
+          <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+
+          {{form.as_p}}
+          <button class="btn btn-primary" type="submit">Войти</button>
+        </form>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4"></div>
+
+    </div>
+  </center>
+{% endblock %}

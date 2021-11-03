@@ -1,0 +1,44 @@
+{% extends 'base_restaurateur_page.html' %}
+
+{% block title %}Рестораны | Star Burger{% endblock %}
+
+{% block content %}
+
+  <div class="container">
+    <center>
+      <h2>Ваши рестораны</h2>
+    </center>
+
+    <hr/>
+
+    <table class="table table-responsive">
+      <tr>
+        <th>Название</th>
+        <th>Адрес</th>
+        <th>Контактный телефон</th>
+        <th>Действия</th>
+      </tr>
+
+      {% for restaurant in restaurants %}
+        <tr>
+          <td>{{ restaurant.name }}</td>
+          <td>
+            {{ restaurant.address|default:'пусто' }}</td>
+          <td>
+            {% if restaurant.contact_phone %}
+              <a href="phone:{{ restaurant.contact_phone }}">{{ restaurant.contact_phone }}</a>
+            {% else %}
+              пусто
+            {% endif %}
+          </td>
+          <td>
+            <a href="{% url 'admin:foodcartapp_restaurant_change' restaurant.id %}">ред.</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+    <a href="{% url 'admin:foodcartapp_restaurant_add' %}" class="btn btn-default">Добавить</a>
+
+  </div>
+{% endblock %}

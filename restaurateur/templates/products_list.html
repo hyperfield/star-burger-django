@@ -1,0 +1,69 @@
+{% extends 'base_restaurateur_page.html' %}
+
+{% block title %}Меню | Star Burger{% endblock %}
+
+{% block content %}
+
+  <center>
+    <h2>Ваше меню</h2>
+  </center>
+
+  <hr/>
+
+  <br/>
+  <br/>
+
+  <div class="container">
+   <table class="table table-responsive">
+      <tr>
+        <th></th>
+        <th>Название</th>
+        <th>Категория</th>
+        <th>Цена</th>
+        {% for restaurant in restaurants %}
+          <th>{{ restaurant.name }}</th>
+        {% endfor %}
+        <th>Действия</th>
+      </tr>
+
+      {% for product, availability in products_with_restaurants %}
+        <tr>
+          <td><img src="{{product.image.url}}" alt="{{product.name}}" height="50px"></td>
+          <td>{{product.name}}</td>
+          <td>{{product.category}}</td>
+          <td>{{product.price}}</td>
+
+          {% for available in availability %}
+            <td>
+              {% if available %}
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 367.805 367.805" style="enable-background:new 0 0 367.805 367.805;" xml:space="preserve" width="20" height="20">
+                  <g>
+                    <path style="fill:#3BB54A;" d="M183.903,0.001c101.566,0,183.902,82.336,183.902,183.902s-82.336,183.902-183.902,183.902
+                    S0.001,285.469,0.001,183.903l0,0C-0.288,82.625,81.579,0.29,182.856,0.001C183.205,0,183.554,0,183.903,0.001z"/>
+                    <polygon style="fill:#D4E1F4;" points="285.78,133.225 155.168,263.837 82.025,191.217 111.805,161.96 155.168,204.801
+                    256.001,103.968   "/>
+                  </g>
+                </svg>
+              {% else %}
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="20" height="20">
+                  <ellipse style="fill:#E21B1B;" cx="256" cy="256" rx="256" ry="255.832"/>
+                    <g>
+                      <rect x="228.021" y="113.143" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -106.0178 256.0051)" style="fill:#FFFFFF;" width="55.991" height="285.669"/>
+
+                      <rect x="113.164" y="227.968" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -106.0134 255.9885)" style="fill:#FFFFFF;" width="285.669" height="55.991"/>
+                    </g>
+                </svg>
+              {% endif %}
+            </td>
+          {% endfor %}
+          <td>
+            <a href="{% url 'admin:foodcartapp_product_change' product.id %}">ред.</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+    <a href="{% url 'admin:foodcartapp_product_add' %}" class="btn btn-default">Добавить</a>
+
+  </div>
+{% endblock %}

@@ -1,0 +1,4 @@
+django==3.2
+django-debug-toolbar==3.2.1
+Pillow==8.2.0
+environs[django]==9.3.2

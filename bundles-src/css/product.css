@@ -1,0 +1,96 @@
+.product {
+    background: #fff;
+    margin: 32px 16px 32px 16px;
+    padding: 15px;
+    border-radius: 2px;
+    border: 2px black;
+  }
+  .product .product-image {
+    border-radius: 2px 2px 0 0;
+    margin-bottom: 20px;
+  }
+  .product .product-image img {
+    cursor: zoom-in;
+    max-width: 100%;
+    max-height: 250px;
+    transition: transform 300ms ease-in;
+    transform: scale(1);
+  }
+  .product .product-image img:hover {
+    transform: scale(1.1);
+  }
+  .product .product-name {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 8px;
+  }
+  .product .product-price {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 22px;
+    margin-bottom: 16px;
+  }
+  .currency:after {
+    content: " ₽";
+  }
+  .product .product-name, .product .product-price {
+    color: #666;
+    padding: 0 16px;
+    text-align: center;
+  }
+  .product .product-action {
+    padding: 16px;
+  }
+  .product .product-action button {
+    width: 100%;
+    transition: all 300ms ease-in;
+  }
+  .product .product-action button.added {
+    background: #fc7710;
+  }
+  .product:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+  .stepper-input {
+    display: flex;
+    display: -webkit-flex;
+    color: #666;
+    max-width: 120px;
+    margin: 0 auto;
+  }
+  .stepper-input .increment, .stepper-input .decrement {
+    height: 24px;
+    width: 24px;
+    border: 1px solid #ccc;
+    text-align: center;
+    box-sizing: border-box;
+    border-radius: 50%;
+    text-decoration: none;
+    color: inherit;
+    font-size: 24px;
+    line-height: 22px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+  }
+  .stepper-input .increment:hover, .stepper-input .decrement:hover {
+    color: #077915;
+    border-color: #077915;
+  }
+  .stepper-input .increment:active, .stepper-input .decrement:active {
+    color: #fff;
+    border-color: #077915;
+    background: #0bc122;
+  }
+  .stepper-input .quantity {
+    height: 24px;
+    width: 48px;
+    text-align: center;
+    margin: 0 12px;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+  }
+  .stepper-input .quantity:focus {
+    outline: none;
+    border-color: #077915;
+  }

@@ -1,0 +1,46 @@
+<!doctype html>{% load static %}
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="icon" href="{% static 'icon.png' %}" type="image/x-icon">
+
+  <title>{% block title %}{% endblock %}</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+</head>
+<body>
+
+  {% block header_nav %}
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{% url 'restaurateur:ProductsView' %}">Star Burger</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="{% url 'restaurateur:ProductsView' %}">Меню</a>
+          </li>
+          <li>
+            <a href="{% url 'restaurateur:RestaurantView' %}">Рестораны</a>
+          </li>
+          <li>
+            <a href="{% url 'restaurateur:view_orders' %}">Заказы</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="{% url 'restaurateur:logout' %}"><span class="glyphicon glyphicon-log-out"></span> Выйти</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  {% endblock header_nav %}
+
+  {% block content %}{% endblock %}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+</body>
+</html>

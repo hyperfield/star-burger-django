@@ -1,0 +1,11 @@
+.carousel-indicators li,
+.carousel-indicators .active {
+  margin: 5px;
+  width: 20px;
+  height: 20px;
+}
+
+
+.carousel-indicators {
+  bottom: 10px;
+}
