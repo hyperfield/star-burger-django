@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from django.templatetags.static import static
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 import json
 
 
@@ -70,9 +72,10 @@ def serialize_products(order_items, order):
     # return serialized_items
 
 
+@api_view(['POST'])
 def register_order(request):
     try:
-        order = json.loads(request.body.decode())
+        order = request.data
         print(order)
         new_order = Order()
         new_order.save()
@@ -86,7 +89,9 @@ def register_order(request):
         new_order.save()
 
     except ValueError:
-        return JsonResponse({
+        return Response({
             'error': 'Value error (ошибка значения)',
         })
-    return JsonResponse(order)
+
+    return Response(order)
+
