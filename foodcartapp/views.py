@@ -61,7 +61,6 @@ def product_list_api(request):
 
 
 def serialize_products(order_items, order):
-    # serialized_items = []
     for item in order_items:
         order_item = OrderItem()
         order_item.product = Product.objects.get(id=item['product'])
@@ -77,11 +76,13 @@ def register_order(request):
     try:
         order = request.data
         print(order)
+        if not isinstance(order['products'], OrderItem):
+            return Response({
+                'error': '"products" is not a list or is not present',
+            })
         new_order = Order()
         new_order.save()
         serialize_products(order['products'], new_order)
-        # new_order.order_items = serialized_order_items
-        # print(new_order.order_items)
         new_order.firstname = order['firstname']
         new_order.lastname = order['lastname']
         new_order.telephone = order['phonenumber']
@@ -91,6 +92,11 @@ def register_order(request):
     except ValueError:
         return Response({
             'error': 'Value error (ошибка значения)',
+        })
+
+    except KeyError:
+        return Response({
+            'error': 'The key "products" is not present',
         })
 
     return Response(order)
