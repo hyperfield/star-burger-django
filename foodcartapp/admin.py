@@ -121,10 +121,6 @@ class OrderItemInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     model = Order
     exclude = ("order_items", )
-    # filter_horizontal = ('order_items',)
-    # list_display = [
-    #     'order_items',
-    # ]
     inlines = [OrderItemInline]
 
 

@@ -1,9 +1,8 @@
 from django.http import JsonResponse
 from django.templatetags.static import static
+from phonenumber_field.phonenumber import PhoneNumber
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import json
-
 
 from .models import Product, Order, OrderItem
 
@@ -71,14 +70,68 @@ def serialize_products(order_items, order):
     # return serialized_items
 
 
+def are_products_ids_present(order):
+    products_ids = [product.id for product in Product.objects.all()]
+    order_products_ids = [item["product"] for item in order["products"]]
+    order_products_ids = [item["product"] for item in order["products"]]
+    absent_products_ids = []
+    for product_id in order_products_ids:
+        if product_id not in products_ids:
+            absent_products_ids.append(product_id)
+    return absent_products_ids
+
+
+def check_order_keys(order, expected_keys):
+    absent_keys = []
+    for key in expected_keys:
+        if key not in order.keys():
+            absent_keys.append(key)
+    return absent_keys
+
+
+def check_keys_contents(order, expected_keys):
+    absent_keys_contents = []
+    for key in expected_keys:
+        if not order[key]:
+            absent_keys_contents.append(key)
+    return absent_keys_contents
+
+
 @api_view(['POST'])
 def register_order(request):
     try:
         order = request.data
         print(order)
-        if not isinstance(order['products'], OrderItem):
+        missing_products_ids = are_products_ids_present(order)
+        if missing_products_ids:
+            missing_products_ids = ", ".join(map(str, missing_products_ids))
             return Response({
-                'error': '"products" is not a list or is not present',
+                'error':
+                f'There are no products with id(s) {missing_products_ids}!',
+            })
+        if not isinstance(order['products'], list):
+            return Response({
+                'error': "'products' is not a list or is not present",
+            })
+        expected_keys = ["firstname", "lastname", "address", "phonenumber"]
+        missing_keys = check_order_keys(order, expected_keys)
+        if missing_keys:
+            missing_keys = ", ".join(missing_keys)
+            return Response({
+                'error': f"The following keys are absent: {missing_keys}!",
+            })
+        missing_keys_contents = check_keys_contents(order, expected_keys)
+        if missing_keys_contents:
+            missing_keys_contents = ", ".join(missing_keys_contents)
+            return Response({
+                'error':
+                f"The following entries are required: '{missing_keys_contents}'",
+            })
+        phonenumber = PhoneNumber.from_string(order["phonenumber"])
+        if not phonenumber.is_valid():
+            return Response({
+                'error':
+                f"Invalid phone number {order['phonenumber']}",
             })
         new_order = Order()
         new_order.save()
@@ -100,4 +153,3 @@ def register_order(request):
         })
 
     return Response(order)
-
