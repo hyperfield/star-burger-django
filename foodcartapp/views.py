@@ -64,7 +64,7 @@ def product_list_api(request):
 
 
 class OrderItemSerializer(ModelSerializer):
-    product = PrimaryKeyRelatedField(queryset=Product.objects.all())
+    # product = PrimaryKeyRelatedField(queryset=Product.objects.all())
 
     class Meta:
         model = OrderItem
@@ -86,13 +86,13 @@ def register_order(request):
     order_serializer.is_valid(raise_exception=True)
 
     order = Order.objects.create(
-        firstname=order_serializer.validated_data['firstname'],
-        lastname=order_serializer.validated_data['lastname'],
-        address=order_serializer.validated_data['address'],
-        phonenumber=order_serializer.validated_data['phonenumber'],
+        firstname=order_serializer.validated_data["firstname"],
+        lastname=order_serializer.validated_data["lastname"],
+        address=order_serializer.validated_data["address"],
+        phonenumber=order_serializer.validated_data["phonenumber"],
     )
-    products_fields = order_serializer.validated_data['products']
+    products_fields = order_serializer.validated_data["products"]
     products = [OrderItem(order=order, **fields) for fields in products_fields]
     OrderItem.objects.bulk_create(products)
 
-    return Response({'order_id': order.id})
+    return Response(order_serializer.data)
