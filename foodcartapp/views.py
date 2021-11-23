@@ -4,9 +4,6 @@ from phonenumber_field.phonenumber import PhoneNumber
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
-from rest_framework.serializers import PrimaryKeyRelatedField
-from rest_framework.serializers import ValidationError
-
 
 from .models import Product, Order, OrderItem
 

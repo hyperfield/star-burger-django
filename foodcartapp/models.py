@@ -126,19 +126,21 @@ class RestaurantMenuItem(models.Model):
         return f"{self.restaurant.name} - {self.product.name}"
 
 
+ORDER_STATUSES = (
+    ("pending", "Pending"),
+    ("processing", "Processing"),
+    ("completed", "Completed"),
+    ("cancelled", "Cancelled"),
+)
+
+
 class Order(models.Model):
     firstname = models.CharField(max_length=20, verbose_name="имя")
     lastname = models.CharField(max_length=20, verbose_name="фамилия")
     phonenumber = PhoneNumberField(verbose_name="телефон")
     address = models.CharField(max_length=200, verbose_name="адрес")
-
-    # order_items = models.ForeignKey(
-    #     'OrderItem',
-    #     related_name='ordered_items',
-    #     verbose_name='элементы заказа',
-    #     on_delete=models.PROTECT,
-    #     null=True, blank=True
-    # )
+    status = models.CharField(max_length=10, choices=ORDER_STATUSES,
+                              default="pending")
 
     class Meta:
         verbose_name = 'заказ'
