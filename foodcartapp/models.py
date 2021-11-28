@@ -134,6 +134,15 @@ ORDER_STATUSES = (
 )
 
 
+class OrderQuerySet(models.QuerySet):
+    def with_total_amounts(self):
+        total_amounts = self.annotate(
+            total_amount=models.Sum(models.F("order_items__product__price")
+                                    * models.F("order_items__quantity"))
+            )
+        return total_amounts
+
+
 class Order(models.Model):
     firstname = models.CharField(max_length=20, verbose_name="имя")
     lastname = models.CharField(max_length=20, verbose_name="фамилия")
@@ -141,6 +150,8 @@ class Order(models.Model):
     address = models.CharField(max_length=200, verbose_name="адрес")
     status = models.CharField(max_length=10, choices=ORDER_STATUSES,
                               default="pending")
+
+    objects = OrderQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'заказ'
@@ -158,7 +169,8 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey('Order', on_delete=models.CASCADE,
-                              related_name="orders", null=True, blank=True)
+                              related_name="order_items",
+                              null=True, blank=True)
     product = models.ForeignKey(Product,
                                 on_delete=models.PROTECT,
                                 related_name="products",
