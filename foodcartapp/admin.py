@@ -114,7 +114,7 @@ class OrderItemInline(admin.TabularInline):
     model = OrderItem
     verbose_name = u"Элемент заказа"
     verbose_name_plural = u"Элементы заказа"
-    list_display = ('product', 'quantity')
+    list_display = ('product', 'quantity', 'price')
 
 
 @admin.register(Order)
@@ -127,4 +127,4 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     model = OrderItem
-    list_display = ('product', 'quantity')
+    list_display = ('product', 'quantity', 'price')

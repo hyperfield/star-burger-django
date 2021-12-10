@@ -137,7 +137,7 @@ ORDER_STATUSES = (
 class OrderQuerySet(models.QuerySet):
     def with_total_amounts(self):
         total_amounts = self.annotate(
-            total_amount=models.Sum(models.F("order_items__product__price")
+            total_amount=models.Sum(models.F("order_items__price")
                                     * models.F("order_items__quantity"))
             )
         return total_amounts
@@ -177,6 +177,9 @@ class OrderItem(models.Model):
                                 verbose_name="продукты")
     quantity = models.IntegerField(validators=[MinValueValidator(0),
                                                MaxValueValidator(10)])
+    price = models.DecimalField(max_digits=7, decimal_places=2,
+                                validators=[MinValueValidator(0)],
+                                verbose_name="цена")
 
     class Meta:
         verbose_name = 'элемент заказа'
