@@ -127,10 +127,10 @@ class RestaurantMenuItem(models.Model):
 
 
 ORDER_STATUSES = (
-    ("pending", "Pending"),
-    ("processing", "Processing"),
-    ("completed", "Completed"),
-    ("cancelled", "Cancelled"),
+    ("pending", "Необработанный"),
+    ("processing", "В обработке"),
+    ("completed", "Завершён"),
+    ("cancelled", "Отменён"),
 )
 
 
@@ -146,10 +146,10 @@ class OrderQuerySet(models.QuerySet):
 class Order(models.Model):
     firstname = models.CharField(max_length=20, verbose_name="имя")
     lastname = models.CharField(max_length=20, verbose_name="фамилия")
-    phonenumber = PhoneNumberField(verbose_name="телефон")
+    phonenumber = PhoneNumberField(verbose_name="телефон", db_index=True)
     address = models.CharField(max_length=200, verbose_name="адрес")
     status = models.CharField(max_length=10, choices=ORDER_STATUSES,
-                              default="pending")
+                              default="pending", db_index=True)
 
     objects = OrderQuerySet.as_manager()
 
