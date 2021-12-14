@@ -2,7 +2,9 @@ from django import forms
 from django.shortcuts import redirect, render
 from django.views import View
 from django.urls import reverse_lazy
+from django.template import RequestContext
 from django.contrib.auth.decorators import user_passes_test
+from pprint import pprint
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import views as auth_views
@@ -100,6 +102,8 @@ def view_orders(request):
     order_items = Order.objects.with_total_amounts().filter(
         status__in=["pending", "processing"]
         )
+    request_context = RequestContext(request)
     return render(request, template_name='order_items.html', context={
         "order_items": order_items,
+        "next": request.path
     })

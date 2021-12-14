@@ -1,10 +1,11 @@
 from django.contrib import admin
+from django.http import HttpResponseRedirect
 from django.shortcuts import reverse
 from django.templatetags.static import static
 from django.utils.html import format_html
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from .models import Product
-from .models import ProductCategory
 from .models import Restaurant
 from .models import RestaurantMenuItem
 from .models import Order, OrderItem
@@ -122,6 +123,19 @@ class OrderAdmin(admin.ModelAdmin):
     model = Order
     exclude = ("order_items", )
     inlines = [OrderItemInline]
+
+    def response_change(self, request, obj):
+        res = super(OrderAdmin, self).response_change(request, obj)
+        if "next" in request.GET:
+            if url_has_allowed_host_and_scheme(
+                    request.GET['next'],
+                    allowed_hosts=['localhost', '127.0.0.1']
+            ):
+                return HttpResponseRedirect(request.GET['next'])
+            else:
+                return res
+        else:
+            return res
 
 
 @admin.register(OrderItem)
