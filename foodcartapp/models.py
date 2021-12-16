@@ -3,6 +3,7 @@ import json
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 
 class Restaurant(models.Model):
@@ -150,7 +151,12 @@ class Order(models.Model):
     address = models.CharField(max_length=200, verbose_name="адрес")
     status = models.CharField(max_length=10, choices=ORDER_STATUSES,
                               default="pending", db_index=True)
-    comment = models.TextField(max_length=300, blank=True, verbose_name="комментарий")
+    comment = models.TextField(
+        max_length=300, blank=True, verbose_name="комментарий"
+        )
+    registered_at = models.DateTimeField(default=timezone.now, db_index=True)
+    called_at = models.DateTimeField(null=True, db_index=True)
+    delivered_at = models.DateTimeField(null=True, db_index=True)
 
     objects = OrderQuerySet.as_manager()
 
