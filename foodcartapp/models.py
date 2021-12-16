@@ -126,15 +126,6 @@ class RestaurantMenuItem(models.Model):
     def __str__(self):
         return f"{self.restaurant.name} - {self.product.name}"
 
-
-ORDER_STATUSES = (
-    ("pending", "Необработанный"),
-    ("processing", "В обработке"),
-    ("completed", "Завершён"),
-    ("cancelled", "Отменён"),
-)
-
-
 class OrderQuerySet(models.QuerySet):
     def with_total_amounts(self):
         total_amounts = self.annotate(
@@ -145,18 +136,35 @@ class OrderQuerySet(models.QuerySet):
 
 
 class Order(models.Model):
+    ORDER_STATUSES = (
+        ("pending", "Необработанный"),
+        ("processing", "В обработке"),
+        ("completed", "Завершён"),
+        ("cancelled", "Отменён"),
+    )
+
+    PAYMENT_METHODS = (
+        ("cash", "Наличностью"),
+        ("electronic", "Электронно"),
+    )
+
     firstname = models.CharField(max_length=20, verbose_name="имя")
     lastname = models.CharField(max_length=20, verbose_name="фамилия")
     phonenumber = PhoneNumberField(verbose_name="телефон", db_index=True)
     address = models.CharField(max_length=200, verbose_name="адрес")
     status = models.CharField(max_length=10, choices=ORDER_STATUSES,
                               default="pending", db_index=True)
+    payment_method = models.CharField(max_length=20,
+                                      choices=PAYMENT_METHODS,
+                                      default="cash",
+                                      verbose_name="Способ оплаты",
+                                      db_index=True)
     comment = models.TextField(
         max_length=300, blank=True, verbose_name="комментарий"
         )
     registered_at = models.DateTimeField(default=timezone.now, db_index=True)
-    called_at = models.DateTimeField(null=True, db_index=True)
-    delivered_at = models.DateTimeField(null=True, db_index=True)
+    called_at = models.DateTimeField(null=True, blank=True, db_index=True)
+    delivered_at = models.DateTimeField(null=True, blank=True, db_index=True)
 
     objects = OrderQuerySet.as_manager()
 
