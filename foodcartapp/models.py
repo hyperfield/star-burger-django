@@ -150,6 +150,7 @@ class Order(models.Model):
     address = models.CharField(max_length=200, verbose_name="адрес")
     status = models.CharField(max_length=10, choices=ORDER_STATUSES,
                               default="pending", db_index=True)
+    comment = models.TextField(max_length=300, blank=True, verbose_name="комментарий")
 
     objects = OrderQuerySet.as_manager()
 
