@@ -126,6 +126,7 @@ class RestaurantMenuItem(models.Model):
     def __str__(self):
         return f"{self.restaurant.name} - {self.product.name}"
 
+
 class OrderQuerySet(models.QuerySet):
     def with_total_amounts(self):
         total_amounts = self.annotate(
@@ -148,6 +149,30 @@ class Order(models.Model):
         ("electronic", "Электронно"),
     )
 
+    def lists_to_set_list(self, nested_lists):
+        result = []
+        for elem in nested_lists:
+            if type(elem) is list:
+                self.lists_to_set_list(elem)
+            else:
+                result.append(elem)
+        print("list result = ", result)
+        return set(result)
+
+    @property
+    def choose_restaurants(self):
+        order_items = self.order_items.all()
+        print("order_items = ", order_items)
+        restaurants = []
+        available_restaurants = []
+        for order_item in order_items:
+            print("order_item = ", order_item)
+            restaurants.append(order_item.product.menu_items.all())
+            available_restaurants.append([restaurant for restaurant in restaurants if restaurant.availability])
+        print("available_restaurants = ", available_restaurants)
+        available_restaurants = self.lists_to_set_list(available_restaurants)
+        return list(available_restaurants)
+
     firstname = models.CharField(max_length=20, verbose_name="имя")
     lastname = models.CharField(max_length=20, verbose_name="фамилия")
     phonenumber = PhoneNumberField(verbose_name="телефон", db_index=True)
@@ -159,6 +184,9 @@ class Order(models.Model):
                                       default="cash",
                                       verbose_name="Способ оплаты",
                                       db_index=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT,
+                                   related_name="orders", null=True,
+                                   verbose_name="Ресторан")
     comment = models.TextField(
         max_length=300, blank=True, verbose_name="комментарий"
         )
@@ -177,6 +205,11 @@ class Order(models.Model):
 
     def get_order_items(self):
         return json.loads(self.order_items)
+
+    # def save(self, *args, **kwargs):
+    #     self.restaurants = self.choose_restaurants
+    #     print("self.restaurants = ", self.restaurants)
+    #     super(Order, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.firstname} {self.lastname}, {self.address}"

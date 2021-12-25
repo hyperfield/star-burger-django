@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import views as auth_views
 
-
 from foodcartapp.models import Product, Restaurant, Order
 
 
@@ -97,10 +96,33 @@ def view_restaurants(request):
 
 @user_passes_test(is_manager, login_url='restaurateur:login')
 def view_orders(request):
-    order_items = Order.objects.with_total_amounts().filter(
+    orders = Order.objects.with_total_amounts().filter(
         status__in=["pending", "processing"]
         )
+    print(orders)
+
+    # order_items_per_order = [order.order_items.all() for order in orders]
+    # # print(order_items_per_order)
+    # restaurants_for_order_items = []
+    # for order_items in order_items_per_order:
+    #     # print(order_items)
+    #     restaurants_for_order_items.append(order_item.product.menu_items.all())
+    # restaurants_result = restaurants_for_order_items[0]
+    # for restaurants_per_order_item in restaurants_for_order_items[1:]:
+    #     for restaurant in restaurants_per_order_item:
+    #         if restaurant not in restaurants_result:
+    #             restaurants_result.remove(restaurant)
+
+    orders_with_restaurants = []
+    for order in orders:
+        order_items = order.order_items.all()
+        for order_item in order_items:
+            restaurants = order_item.product.menu_items.all()
+        # order_with_restaurants = 
+        orders_with_restaurants.append((order, restaurants))
+
+    print(orders_with_restaurants)
     return render(request, template_name='order_items.html', context={
-        "order_items": order_items,
+        "orders": orders_with_restaurants,
         "next": request.path,
     })
