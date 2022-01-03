@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
-import os
 import sys
+
+from environs import Env
+
+env = Env()
+env.read_env()
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'star_burger.settings')
+    DJANGO_SETTINGS_MODULE = env.str("DJANGO_SETTINGS_MODULE")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

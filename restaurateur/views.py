@@ -7,7 +7,11 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import views as auth_views
 
+from django.conf import settings
+
 from foodcartapp.models import Product, Restaurant, Order
+
+import requests
 
 
 class Login(forms.Form):
@@ -94,34 +98,69 @@ def view_restaurants(request):
     })
 
 
+def fetch_coordinates(apikey, address):
+    base_url = "https://geocode-maps.yandex.ru/1.x"
+    response = requests.get(base_url, params={
+        "geocode": address,
+        "apikey": apikey,
+        "format": "json",
+    })
+    response.raise_for_status()
+    found_places = response.json()['response']['GeoObjectCollection']['featureMember']
+
+    if not found_places:
+        return None
+
+    most_relevant = found_places[0]
+    lon, lat = most_relevant['GeoObject']['Point']['pos'].split(" ")
+    return lon, lat
+
+
 @user_passes_test(is_manager, login_url='restaurateur:login')
 def view_orders(request):
-    orders = Order.objects.with_total_amounts().filter(
-        status__in=["pending", "processing"]
-        )
-    print(orders)
-
-    # order_items_per_order = [order.order_items.all() for order in orders]
-    # # print(order_items_per_order)
-    # restaurants_for_order_items = []
-    # for order_items in order_items_per_order:
-    #     # print(order_items)
-    #     restaurants_for_order_items.append(order_item.product.menu_items.all())
-    # restaurants_result = restaurants_for_order_items[0]
-    # for restaurants_per_order_item in restaurants_for_order_items[1:]:
-    #     for restaurant in restaurants_per_order_item:
-    #         if restaurant not in restaurants_result:
-    #             restaurants_result.remove(restaurant)
-
+    from geopy import distance
+    orders = Order.objects.with_total_amounts().\
+        prefetch_related("order_items__product__menu_items__restaurant")\
+        .filter(status__in=["pending", "processing"])
     orders_with_restaurants = []
     for order in orders:
-        order_items = order.order_items.all()
-        for order_item in order_items:
-            restaurants = order_item.product.menu_items.all()
-        # order_with_restaurants = 
-        orders_with_restaurants.append((order, restaurants))
+        restaurants = [order_item.product.menu_items.all()
+                       for order_item in order.order_items.all()]
+        # for order_item in order.order_items.all():
+        #     restaurants.append(order_item.product.menu_items.all())
 
-    print(orders_with_restaurants)
+        if not restaurants:
+            continue
+        # Intersect restaurants availability for each order_item to show only
+        # restaurants in which all order items are available.
+        initial_restaurants_entries = [_.restaurant for _ in restaurants[0]]
+        for restaurants_entry in restaurants[1:]:
+            other_restaurants = [_.restaurant for _ in restaurants_entry
+                                 if _.availability]
+            for restaurant in initial_restaurants_entries:
+                if restaurant not in other_restaurants:
+                    initial_restaurants_entries.remove(restaurant)
+
+        rest_with_dist = []
+        for restaurant in initial_restaurants_entries:
+            rest_coords = fetch_coordinates(
+                settings.YANDEX_GEOCODER_API_KEY, restaurant.address
+                )
+            if not rest_coords:
+                continue
+            rest_coords = (rest_coords[1], rest_coords[0])
+            client_coords = fetch_coordinates(
+                settings.YANDEX_GEOCODER_API_KEY, order.address
+                )
+            if not client_coords:
+                break
+            client_coords = (client_coords[1], client_coords[0])
+            dist_km = distance.distance(client_coords, rest_coords).km
+            rest_with_dist.append((restaurant, round(dist_km, 3)))
+        rest_with_dist = sorted(rest_with_dist, key=lambda x: x[1])
+
+        orders_with_restaurants.append((order, rest_with_dist))
+
     return render(request, template_name='order_items.html', context={
         "orders": orders_with_restaurants,
         "next": request.path,

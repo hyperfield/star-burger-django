@@ -62,8 +62,6 @@ def product_list_api(request):
 
 
 class OrderItemSerializer(ModelSerializer):
-    # product = PrimaryKeyRelatedField(queryset=Product.objects.all())
-
     class Meta:
         model = OrderItem
         fields = ["product", "quantity"]

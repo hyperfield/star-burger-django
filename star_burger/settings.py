@@ -4,7 +4,6 @@ import dj_database_url
 
 from environs import Env
 
-
 env = Env()
 env.read_env()
 
@@ -124,3 +123,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "bundles"),
     os.path.join(BASE_DIR, "static"),
 ]
+
+YANDEX_GEOCODER_API_KEY = env.str("YANDEX_GEOCODER_API_KEY")

@@ -3,6 +3,7 @@ import json
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MinValueValidator, MaxValueValidator
+# from django.db.models import Prefetch
 from django.utils import timezone
 
 
@@ -135,6 +136,10 @@ class OrderQuerySet(models.QuerySet):
             )
         return total_amounts
 
+    # def prefetch_order_items(self):
+    #     prefetch_order_items = Prefetch("order_items")
+    #     return self.prefetch_related(prefetch_order_items)
+
 
 class Order(models.Model):
     ORDER_STATUSES = (
@@ -148,30 +153,6 @@ class Order(models.Model):
         ("cash", "Наличностью"),
         ("electronic", "Электронно"),
     )
-
-    def lists_to_set_list(self, nested_lists):
-        result = []
-        for elem in nested_lists:
-            if type(elem) is list:
-                self.lists_to_set_list(elem)
-            else:
-                result.append(elem)
-        print("list result = ", result)
-        return set(result)
-
-    @property
-    def choose_restaurants(self):
-        order_items = self.order_items.all()
-        print("order_items = ", order_items)
-        restaurants = []
-        available_restaurants = []
-        for order_item in order_items:
-            print("order_item = ", order_item)
-            restaurants.append(order_item.product.menu_items.all())
-            available_restaurants.append([restaurant for restaurant in restaurants if restaurant.availability])
-        print("available_restaurants = ", available_restaurants)
-        available_restaurants = self.lists_to_set_list(available_restaurants)
-        return list(available_restaurants)
 
     firstname = models.CharField(max_length=20, verbose_name="имя")
     lastname = models.CharField(max_length=20, verbose_name="фамилия")
@@ -215,6 +196,12 @@ class Order(models.Model):
         return f"{self.firstname} {self.lastname}, {self.address}"
 
 
+# class OrderItemQuerySet(models.QuerySet):
+#     def prefetch_products(self):
+#         prefetch_products = Prefetch("product")
+#         return self.prefetch_related(prefetch_products)
+
+
 class OrderItem(models.Model):
     order = models.ForeignKey('Order', on_delete=models.CASCADE,
                               related_name="order_items",
@@ -228,6 +215,8 @@ class OrderItem(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2,
                                 validators=[MinValueValidator(0)],
                                 verbose_name="цена")
+
+    # objects = OrderItemQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'элемент заказа'

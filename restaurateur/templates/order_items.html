@@ -30,14 +30,14 @@
         <td>{{order.0.get_status_display}}</td>
         <td>{{order.0.get_payment_method_display}}</td>
         <td>{{order.0.total_amount}}</td>
-        <td>{{order.0.firstname}} {{order.lastname}}</td>
+        <td>{{order.0.firstname}} {{order.0.lastname}}</td>
         <td>{{order.0.phonenumber}}</td>
         <td>{{order.0.address}}</td>
         <td><details>
           <summary>Развернуть</summary>
           <ul>
-          {% for restaurant in order.1 %}
-            <li>{{restaurant.restaurant}}</li>
+          {% for restaurant, distance in order.1 %}
+            <li>{{restaurant}} - {{distance}} km</li>
           {% endfor %}
           </ul>
         </details></td>

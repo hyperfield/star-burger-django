@@ -140,9 +140,11 @@ parcel build bundles-src/index.js --dist-dir bundles --public-url="./"
 
 Настроить бэкенд: создать файл `.env` в каталоге `star_burger/` со следующими настройками:
 
+- `DJANGO_SETTINGS_MODULE` - путь к файлу настроек Django.
 - `DEBUG` — дебаг-режим. Поставьте `False`.
 - `SECRET_KEY` — секретный ключ проекта. Он отвечает за шифрование на сайте. Например, им зашифрованы все пароли на вашем сайте. Не стоит использовать значение по-умолчанию, **замените на своё**.
-- `ALLOWED_HOSTS` — [см. документацию Django](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts)
+- `ALLOWED_HOSTS` — [см. документацию Django](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts).
+- `YANDEX_GEOCODER_API_KEY` - API-ключ от сервиса Yandex Geocoder. Сервис используется для вычисления расстояний между ресторанами и клиентами. Ключ можно получить по [этому адресу](https://developer.tech.yandex.ru/).
 
 ## Цели проекта
 
