@@ -5,6 +5,8 @@ from django.templatetags.static import static
 from django.utils.html import format_html
 from django.utils.http import url_has_allowed_host_and_scheme
 
+from django.conf import settings
+
 from .models import Product
 from .models import Restaurant
 from .models import RestaurantMenuItem
@@ -129,7 +131,7 @@ class OrderAdmin(admin.ModelAdmin):
         if "next" in request.GET:
             if url_has_allowed_host_and_scheme(
                     request.GET['next'],
-                    allowed_hosts=['localhost', '127.0.0.1']
+                    allowed_hosts=settings.ALLOWED_HOSTS
             ):
                 return HttpResponseRedirect(request.GET['next'])
             else:

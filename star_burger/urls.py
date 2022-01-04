@@ -23,6 +23,7 @@ from django.shortcuts import render
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('locations/', include('geolocations.urls')),
     path('', render, kwargs={'template_name': 'index.html'}, name='start_page'),
     path('api/', include('foodcartapp.urls')),
     path('manager/', include('restaurateur.urls')),

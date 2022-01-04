@@ -10,6 +10,7 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 
 from foodcartapp.models import Product, Restaurant, Order
+from geolocations.models import Location
 
 import requests
 
@@ -116,9 +117,49 @@ def fetch_coordinates(apikey, address):
     return lon, lat
 
 
+# Intersect restaurants availability for each order_item to show only
+# restaurants in which all order items are available.
+def intersect_restaurants(restaurants):
+    initial_restaurants_entries = [_.restaurant for _ in restaurants[0]]
+    if len(restaurants) <= 1:
+        return initial_restaurants_entries
+    for restaurants_entry in restaurants[1:]:
+        other_restaurants = [_.restaurant for _ in restaurants_entry
+                             if _.availability]
+        for restaurant in initial_restaurants_entries:
+            if restaurant not in other_restaurants:
+                initial_restaurants_entries.remove(restaurant)
+    return initial_restaurants_entries
+
+
+def get_coords(locations, entity_with_address):
+    current_coords = None
+    for location in locations:
+        if entity_with_address.address != location.address:
+            continue
+        else:
+            current_coords = (location.longitude, location.latitude)
+    if not current_coords:
+        current_coords = fetch_coordinates(
+            settings.YANDEX_GEOCODER_API_KEY, entity_with_address.address
+            )
+        if not current_coords:
+            return current_coords
+        else:
+            new_location = Location.objects.create(
+                address=entity_with_address.address,
+                latitude=current_coords[1],
+                longitude=current_coords[0],
+            )
+            locations.append(new_location)
+    current_coords = (current_coords[1], current_coords[0])
+    return current_coords
+
+
 @user_passes_test(is_manager, login_url='restaurateur:login')
 def view_orders(request):
     from geopy import distance
+    locations = [location for location in Location.objects.all()] # To reduce queries to DB
     orders = Order.objects.with_total_amounts().\
         prefetch_related("order_items__product__menu_items__restaurant")\
         .filter(status__in=["pending", "processing"])
@@ -126,35 +167,21 @@ def view_orders(request):
     for order in orders:
         restaurants = [order_item.product.menu_items.all()
                        for order_item in order.order_items.all()]
-        # for order_item in order.order_items.all():
-        #     restaurants.append(order_item.product.menu_items.all())
-
         if not restaurants:
             continue
-        # Intersect restaurants availability for each order_item to show only
-        # restaurants in which all order items are available.
-        initial_restaurants_entries = [_.restaurant for _ in restaurants[0]]
-        for restaurants_entry in restaurants[1:]:
-            other_restaurants = [_.restaurant for _ in restaurants_entry
-                                 if _.availability]
-            for restaurant in initial_restaurants_entries:
-                if restaurant not in other_restaurants:
-                    initial_restaurants_entries.remove(restaurant)
+
+        available_restaurants = intersect_restaurants(restaurants)
 
         rest_with_dist = []
-        for restaurant in initial_restaurants_entries:
-            rest_coords = fetch_coordinates(
-                settings.YANDEX_GEOCODER_API_KEY, restaurant.address
-                )
+        for restaurant in available_restaurants:
+            rest_coords = get_coords(locations, restaurant)
             if not rest_coords:
                 continue
-            rest_coords = (rest_coords[1], rest_coords[0])
-            client_coords = fetch_coordinates(
-                settings.YANDEX_GEOCODER_API_KEY, order.address
-                )
+
+            client_coords = get_coords(locations, order)
             if not client_coords:
                 break
-            client_coords = (client_coords[1], client_coords[0])
+
             dist_km = distance.distance(client_coords, rest_coords).km
             rest_with_dist.append((restaurant, round(dist_km, 3)))
         rest_with_dist = sorted(rest_with_dist, key=lambda x: x[1])
