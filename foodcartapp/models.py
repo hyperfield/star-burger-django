@@ -193,7 +193,7 @@ class OrderItem(models.Model):
                               verbose_name="Ассоциированный заказ")
     product = models.ForeignKey(Product,
                                 on_delete=models.PROTECT,
-                                related_name="products",
+                                related_name="associated_product",
                                 verbose_name="продукты")
     quantity = models.IntegerField(validators=[MinValueValidator(1),
                                                MaxValueValidator(10)],
@@ -201,7 +201,6 @@ class OrderItem(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2,
                                 validators=[MinValueValidator(0)],
                                 verbose_name="цена")
-
 
     class Meta:
         verbose_name = 'элемент заказа'
