@@ -147,6 +147,7 @@ class Order(models.Model):
     PAYMENT_METHODS = (
         ("cash", "Наличностью"),
         ("electronic", "Электронно"),
+        ("not_specified", "Не указано"),
     )
 
     firstname = models.CharField(max_length=20, verbose_name="имя")
@@ -157,7 +158,7 @@ class Order(models.Model):
                               default="pending", db_index=True)
     payment_method = models.CharField(max_length=20,
                                       choices=PAYMENT_METHODS,
-                                      default="cash",
+                                      default="not_specified",
                                       verbose_name="Способ оплаты",
                                       db_index=True)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT,
