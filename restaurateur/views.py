@@ -161,12 +161,12 @@ def view_orders(request):
     from geopy import distance
     locations = [location for location in Location.objects.all()] # To reduce queries to DB
     orders = Order.objects.with_total_amounts().\
-        prefetch_related("order_items__product__menu_items__restaurant")\
+        prefetch_related("items__product__menu_items__restaurant")\
         .filter(status__in=["pending", "processing"])
     orders_with_restaurants = []
     for order in orders:
         restaurants = [order_item.product.menu_items.all()
-                       for order_item in order.order_items.all()]
+                       for order_item in order.items.all()]
         if not restaurants:
             continue
 
