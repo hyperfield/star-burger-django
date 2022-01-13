@@ -135,10 +135,6 @@ class OrderQuerySet(models.QuerySet):
             )
         return total_amounts
 
-    # def prefetch_order_items(self):
-    #     prefetch_order_items = Prefetch("order_items")
-    #     return self.prefetch_related(prefetch_order_items)
-
 
 class Order(models.Model):
     ORDER_STATUSES = (
@@ -186,19 +182,8 @@ class Order(models.Model):
     def get_order_items(self):
         return json.loads(self.order_items)
 
-    # def save(self, *args, **kwargs):
-    #     self.restaurants = self.choose_restaurants
-    #     print("self.restaurants = ", self.restaurants)
-    #     super(Order, self).save(*args, **kwargs)
-
     def __str__(self):
         return f"{self.firstname} {self.lastname}, {self.address}"
-
-
-# class OrderItemQuerySet(models.QuerySet):
-#     def prefetch_products(self):
-#         prefetch_products = Prefetch("product")
-#         return self.prefetch_related(prefetch_products)
 
 
 class OrderItem(models.Model):
@@ -215,7 +200,6 @@ class OrderItem(models.Model):
                                 validators=[MinValueValidator(0)],
                                 verbose_name="цена")
 
-    # objects = OrderItemQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'элемент заказа'
