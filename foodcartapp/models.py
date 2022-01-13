@@ -162,7 +162,8 @@ class Order(models.Model):
                                       verbose_name="Способ оплаты",
                                       db_index=True)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT,
-                                   related_name="orders", null=True,
+                                   related_name="orders",
+                                   null=True, blank=True,
                                    verbose_name="Ресторан")
     comment = models.TextField(
         max_length=300, blank=True, verbose_name="комментарий"
