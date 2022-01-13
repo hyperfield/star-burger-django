@@ -166,7 +166,7 @@ class Order(models.Model):
                                    null=True, blank=True,
                                    verbose_name="Ресторан")
     comment = models.TextField(
-        max_length=300, blank=True, verbose_name="комментарий"
+        blank=True, verbose_name="комментарий"
         )
     registered_at = models.DateTimeField(default=timezone.now, db_index=True)
     called_at = models.DateTimeField(null=True, blank=True, db_index=True)
