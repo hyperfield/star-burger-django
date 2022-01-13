@@ -7,7 +7,7 @@ import phonenumber_field.modelfields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('foodcartapp', '0052_auto_20211209_0740'),
+        ('foodcartapp', '0051_auto_20211209_0739.py'),
     ]
 
     operations = [
