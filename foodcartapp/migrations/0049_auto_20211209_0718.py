@@ -5,8 +5,8 @@ from django.db import migrations
 
 def tranfser_prices(apps, schema_editor):
     OrderItem = apps.get_model('foodcartapp', 'OrderItem')
-
-    for order_item in OrderItem.objects.all():
+    order_items = OrderItem.objects.all()
+    for order_item in order_items.iterator():
         order_item.price = order_item.product.price
         order_item.save()
 
