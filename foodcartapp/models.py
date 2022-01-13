@@ -130,8 +130,8 @@ class RestaurantMenuItem(models.Model):
 class OrderQuerySet(models.QuerySet):
     def with_total_amounts(self):
         total_amounts = self.annotate(
-            total_amount=models.Sum(models.F("order_items__price")
-                                    * models.F("order_items__quantity"))
+            total_amount=models.Sum(models.F("items__price")
+                                    * models.F("items__quantity"))
             )
         return total_amounts
 
@@ -176,11 +176,11 @@ class Order(models.Model):
         verbose_name = 'заказ'
         verbose_name_plural = 'заказы'
 
-    def set_order_items(self, order_items):
-        self.order_items = json.dumps(order_items)
+    def set_order_items(self, items):
+        self.items = json.dumps(items)
 
     def get_order_items(self):
-        return json.loads(self.order_items)
+        return json.loads(self.items)
 
     def __str__(self):
         return f"{self.firstname} {self.lastname}, {self.address}"
