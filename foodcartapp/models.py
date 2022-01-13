@@ -195,7 +195,7 @@ class OrderItem(models.Model):
                                 on_delete=models.PROTECT,
                                 related_name="products",
                                 verbose_name="продукты")
-    quantity = models.IntegerField(validators=[MinValueValidator(0),
+    quantity = models.IntegerField(validators=[MinValueValidator(1),
                                                MaxValueValidator(10)],
                                    verbose_name="Количество")
     price = models.DecimalField(max_digits=7, decimal_places=2,
