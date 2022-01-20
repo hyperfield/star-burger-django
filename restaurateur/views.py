@@ -157,6 +157,7 @@ def get_coords(locations, entity_with_address):
     return current_coords
 
 
+DIST_ROUND_DIGITS = 3
 @user_passes_test(is_manager, login_url='restaurateur:login')
 def view_orders(request):
     from geopy import distance
@@ -184,7 +185,7 @@ def view_orders(request):
                     break
 
             dist_km = distance.distance(client_coords, rest_coords).km
-            rest_with_dist.append((restaurant, round(dist_km, 3)))
+            rest_with_dist.append((restaurant, round(dist_km, DIST_ROUND_DIGITS)))
         rest_with_dist = sorted(rest_with_dist, key=lambda x: x[1])
 
         orders_with_restaurants.append((order, rest_with_dist))
