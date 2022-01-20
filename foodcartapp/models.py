@@ -168,9 +168,12 @@ class Order(models.Model):
     comment = models.TextField(
         blank=True, verbose_name="комментарий"
         )
-    registered_at = models.DateTimeField(default=timezone.now, db_index=True)
-    called_at = models.DateTimeField(null=True, blank=True, db_index=True)
-    delivered_at = models.DateTimeField(null=True, blank=True, db_index=True)
+    registered_at = models.DateTimeField(default=timezone.now, db_index=True,
+                                         verbose_name="Когда зарегистрирован")
+    called_at = models.DateTimeField(null=True, blank=True, db_index=True,
+                                     verbose_name="Когда звонили")
+    delivered_at = models.DateTimeField(null=True, blank=True, db_index=True,
+                                        verbose_name="Когда доставили")
 
     objects = OrderQuerySet.as_manager()
 
