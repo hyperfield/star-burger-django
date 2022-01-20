@@ -8,23 +8,23 @@ from django.utils import timezone
 
 class Restaurant(models.Model):
     name = models.CharField(
-        'название',
+        'Название',
         max_length=50
     )
     address = models.CharField(
-        'адрес',
+        'Адрес',
         max_length=100,
         blank=True,
     )
     contact_phone = models.CharField(
-        'контактный телефон',
+        'Контактный телефон',
         max_length=50,
         blank=True,
     )
 
     class Meta:
-        verbose_name = 'ресторан'
-        verbose_name_plural = 'рестораны'
+        verbose_name = 'Ресторан'
+        verbose_name_plural = 'Рестораны'
 
     def __str__(self):
         return self.name
@@ -42,13 +42,13 @@ class ProductQuerySet(models.QuerySet):
 
 class ProductCategory(models.Model):
     name = models.CharField(
-        'название',
+        'Название',
         max_length=50
     )
 
     class Meta:
-        verbose_name = 'категория'
-        verbose_name_plural = 'категории'
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
     def __str__(self):
         return self.name
@@ -56,33 +56,33 @@ class ProductCategory(models.Model):
 
 class Product(models.Model):
     name = models.CharField(
-        'название',
+        'Название',
         max_length=50
     )
     category = models.ForeignKey(
         ProductCategory,
-        verbose_name='категория',
+        verbose_name='Категория',
         related_name='products',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
     )
     price = models.DecimalField(
-        'цена',
+        'Цена',
         max_digits=8,
         decimal_places=2,
         validators=[MinValueValidator(0)]
     )
     image = models.ImageField(
-        'картинка'
+        'Картинка'
     )
     special_status = models.BooleanField(
-        'спец.предложение',
+        'Спец.предложение',
         default=False,
         db_index=True,
     )
     description = models.TextField(
-        'описание',
+        'Описание',
         max_length=200,
         blank=True,
     )
@@ -90,8 +90,8 @@ class Product(models.Model):
     objects = ProductQuerySet.as_manager()
 
     class Meta:
-        verbose_name = 'товар'
-        verbose_name_plural = 'товары'
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
 
     def __str__(self):
         return self.name
@@ -101,24 +101,24 @@ class RestaurantMenuItem(models.Model):
     restaurant = models.ForeignKey(
         Restaurant,
         related_name='menu_items',
-        verbose_name="ресторан",
+        verbose_name="Ресторан",
         on_delete=models.CASCADE,
     )
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
         related_name='menu_items',
-        verbose_name='продукт',
+        verbose_name='Продукт',
     )
     availability = models.BooleanField(
-        'в продаже',
+        'В продаже',
         default=True,
         db_index=True
     )
 
     class Meta:
-        verbose_name = 'пункт меню ресторана'
-        verbose_name_plural = 'пункты меню ресторана'
+        verbose_name = 'Пункт меню ресторана'
+        verbose_name_plural = 'Пункты меню ресторана'
         unique_together = [
             ['restaurant', 'product']
         ]
@@ -150,10 +150,10 @@ class Order(models.Model):
         ("not_specified", "Не указано"),
     )
 
-    firstname = models.CharField(max_length=20, verbose_name="имя")
-    lastname = models.CharField(max_length=20, verbose_name="фамилия")
-    phonenumber = PhoneNumberField(verbose_name="телефон", db_index=True)
-    address = models.CharField(max_length=200, verbose_name="адрес")
+    firstname = models.CharField(max_length=20, verbose_name="Имя")
+    lastname = models.CharField(max_length=20, verbose_name="Фамилия")
+    phonenumber = PhoneNumberField(verbose_name="Телефон", db_index=True)
+    address = models.CharField(max_length=200, verbose_name="Адрес")
     status = models.CharField(max_length=10, choices=ORDER_STATUSES,
                               default="pending", db_index=True)
     payment_method = models.CharField(max_length=20,
@@ -166,7 +166,7 @@ class Order(models.Model):
                                    null=True, blank=True,
                                    verbose_name="Ресторан")
     comment = models.TextField(
-        blank=True, verbose_name="комментарий"
+        blank=True, verbose_name="Комментарий"
         )
     registered_at = models.DateTimeField(default=timezone.now, db_index=True,
                                          verbose_name="Когда зарегистрирован")
@@ -178,8 +178,8 @@ class Order(models.Model):
     objects = OrderQuerySet.as_manager()
 
     class Meta:
-        verbose_name = 'заказ'
-        verbose_name_plural = 'заказы'
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
 
     def __str__(self):
         return f"{self.firstname} {self.lastname}, {self.address}"
@@ -188,22 +188,21 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey('Order', on_delete=models.CASCADE,
                               related_name="items",
-                              null=True, blank=True,
-                              verbose_name="Ассоциированный заказ")
+                              null=True, verbose_name="Ассоциированный заказ")
     product = models.ForeignKey(Product,
                                 on_delete=models.PROTECT,
                                 related_name="associated_product",
-                                verbose_name="продукты")
+                                verbose_name="Продукты")
     quantity = models.IntegerField(validators=[MinValueValidator(1),
                                                MaxValueValidator(10)],
                                    verbose_name="Количество")
     price = models.DecimalField(max_digits=7, decimal_places=2,
                                 validators=[MinValueValidator(0)],
-                                verbose_name="цена")
+                                verbose_name="Цена")
 
     class Meta:
-        verbose_name = 'элемент заказа'
-        verbose_name_plural = 'элементы заказов'
+        verbose_name = 'Элемент заказа'
+        verbose_name_plural = 'Элементы заказов'
 
     def __str__(self):
         return f"{self.product}, qty: {self.quantity}"
