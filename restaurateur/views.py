@@ -160,15 +160,13 @@ def get_coords(locations, entity_with_address):
 def view_orders(request):
     from geopy import distance
     locations = [location for location in Location.objects.all()] # To reduce queries to DB
-    orders = Order.objects.with_total_amounts().\
+    orders = Order.objects.with_total_prices().\
         prefetch_related("items__product__menu_items__restaurant")\
         .filter(status__in=["pending", "processing"])
     orders_with_restaurants = []
     for order in orders:
         restaurants = [order_item.product.menu_items.all()
                        for order_item in order.items.all()]
-        if not restaurants:
-            continue
 
         available_restaurants = intersect_restaurants(restaurants)
 

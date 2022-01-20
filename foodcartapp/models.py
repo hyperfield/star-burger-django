@@ -128,12 +128,12 @@ class RestaurantMenuItem(models.Model):
 
 
 class OrderQuerySet(models.QuerySet):
-    def with_total_amounts(self):
-        total_amounts = self.annotate(
-            total_amount=models.Sum(models.F("items__price")
-                                    * models.F("items__quantity"))
+    def with_total_prices(self):
+        total_prices = self.annotate(
+            total_price=models.Sum(models.F("items__price")
+                                   * models.F("items__quantity"))
             )
-        return total_amounts
+        return total_prices
 
 
 class Order(models.Model):
