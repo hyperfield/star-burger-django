@@ -146,13 +146,13 @@ def get_coords(locations, entity_with_address):
             )
         if not current_coords:
             return current_coords
-        else:
-            new_location = Location.objects.create(
-                address=entity_with_address.address,
-                latitude=current_coords[1],
-                longitude=current_coords[0],
-            )
-            locations.append(new_location)
+
+        new_location = Location.objects.create(
+            address=entity_with_address.address,
+            latitude=current_coords[1],
+            longitude=current_coords[0],
+        )
+        locations.append(new_location)
     current_coords = (current_coords[1], current_coords[0])
     return current_coords
 
@@ -172,14 +172,16 @@ def view_orders(request):
         available_restaurants = intersect_restaurants(restaurants_sets)
 
         rest_with_dist = []
+        client_coords = None
         for restaurant in available_restaurants:
             rest_coords = get_coords(locations, restaurant)
             if not rest_coords:
                 continue
 
-            client_coords = get_coords(locations, order)
             if not client_coords:
-                break
+                client_coords = get_coords(locations, order)
+                if not client_coords:
+                    break
 
             dist_km = distance.distance(client_coords, rest_coords).km
             rest_with_dist.append((restaurant, round(dist_km, 3)))
