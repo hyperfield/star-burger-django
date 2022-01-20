@@ -119,17 +119,18 @@ def fetch_coordinates(apikey, address):
 
 # Intersect restaurants availability for each order_item to show only
 # restaurants in which all order items are available.
-def intersect_restaurants(restaurants):
-    initial_restaurants_entries = [_.restaurant for _ in restaurants[0]]
-    if len(restaurants) <= 1:
-        return initial_restaurants_entries
-    for restaurants_entry in restaurants[1:]:
-        other_restaurants = [_.restaurant for _ in restaurants_entry
-                             if _.availability]
-        for restaurant in initial_restaurants_entries:
-            if restaurant not in other_restaurants:
-                initial_restaurants_entries.remove(restaurant)
-    return initial_restaurants_entries
+def intersect_restaurants(restaurants_sets):
+    if len(restaurants_sets) == 0:
+        return []
+    initial_restaurants_set = set([_.restaurant for _ in restaurants_sets[0]])
+    if len(restaurants_sets) <= 1:
+        return initial_restaurants_set
+    for restaurants_entry in restaurants_sets[1:]:
+        other_restaurants_set = set([_.restaurant for _ in restaurants_entry
+                                     if _.availability])
+        initial_restaurants_set =\
+            initial_restaurants_set & other_restaurants_set
+    return list(initial_restaurants_set)
 
 
 def get_coords(locations, entity_with_address):
@@ -159,16 +160,16 @@ def get_coords(locations, entity_with_address):
 @user_passes_test(is_manager, login_url='restaurateur:login')
 def view_orders(request):
     from geopy import distance
-    locations = [location for location in Location.objects.all()] # To reduce queries to DB
+    locations = [location for location in Location.objects.all()]
     orders = Order.objects.with_total_prices().\
         prefetch_related("items__product__menu_items__restaurant")\
         .filter(status__in=["pending", "processing"])
     orders_with_restaurants = []
     for order in orders:
-        restaurants = [order_item.product.menu_items.all()
-                       for order_item in order.items.all()]
+        restaurants_sets = [order_item.product.menu_items.all()
+                            for order_item in order.items.all()]
 
-        available_restaurants = intersect_restaurants(restaurants)
+        available_restaurants = intersect_restaurants(restaurants_sets)
 
         rest_with_dist = []
         for restaurant in available_restaurants:
