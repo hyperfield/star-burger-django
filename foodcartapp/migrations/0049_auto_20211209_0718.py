@@ -3,7 +3,7 @@
 from django.db import migrations
 
 
-def tranfser_prices(apps, schema_editor):
+def transfer_prices(apps, schema_editor):
     OrderItem = apps.get_model('foodcartapp', 'OrderItem')
     order_items = OrderItem.objects.all()
     for order_item in order_items.iterator():
@@ -18,5 +18,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(tranfser_prices),
+        migrations.RunPython(transfer_prices),
     ]
