@@ -10,11 +10,11 @@ class Location(models.Model):
     )
     latitude = models.FloatField(
       'широта',
-      blank=True,
+      blank=True, null=True,
     )
     longitude = models.FloatField(
       'долгота',
-      blank=True,
+      blank=True, null=True,
     )
     created_on = models.DateField(
       'дата запроса',

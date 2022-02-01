@@ -1,5 +1,4 @@
 from django import forms
-from django.db import models
 from django.shortcuts import redirect, render
 from django.views import View
 from django.urls import reverse_lazy
@@ -14,6 +13,9 @@ from foodcartapp.models import Product, Restaurant, Order
 from geolocations.models import Location
 
 import requests
+
+
+DIST_ROUND_DIGITS = 3
 
 
 class Login(forms.Form):
@@ -126,12 +128,14 @@ def fetch_coordinates(apikey, address):
 def intersect_restaurants(restaurants_sets):
     if len(restaurants_sets) == 0:
         return []
-    initial_restaurants_set = set([_.restaurant for _ in restaurants_sets[0]])
+    initial_restaurants_set = set([menu_item.restaurant for menu_item
+                                   in restaurants_sets[0]])
     if len(restaurants_sets) <= 1:
         return initial_restaurants_set
     for restaurants_entry in restaurants_sets[1:]:
-        other_restaurants_set = set([_.restaurant for _ in restaurants_entry
-                                     if _.availability])
+        other_restaurants_set = set([menu_item.restaurant for menu_item
+                                     in restaurants_entry
+                                     if menu_item.availability])
         initial_restaurants_set =\
             initial_restaurants_set & other_restaurants_set
     return list(initial_restaurants_set)
@@ -156,9 +160,6 @@ def get_coords(entity_address):
     return latitude, longitude
 
 
-DIST_ROUND_DIGITS = 3
-
-
 @user_passes_test(is_manager, login_url='restaurateur:login')
 def view_orders(request):
     from geopy import distance
@@ -170,7 +171,6 @@ def view_orders(request):
     for order in orders:
         restaurants_sets = [order_item.product.menu_items.all()
                             for order_item in order.items.all()]
-
         available_restaurants = intersect_restaurants(restaurants_sets)
 
         rest_with_dist = []
