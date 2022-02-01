@@ -191,7 +191,7 @@ class OrderItem(models.Model):
                               verbose_name="Ассоциированный заказ")
     product = models.ForeignKey(Product,
                                 on_delete=models.PROTECT,
-                                related_name="order_item",
+                                related_name="order_items",
                                 verbose_name="Продукты")
     quantity = models.IntegerField(validators=[MinValueValidator(1),
                                                MaxValueValidator(10)],
