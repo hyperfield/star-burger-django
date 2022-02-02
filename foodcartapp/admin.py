@@ -10,7 +10,7 @@ from django.conf import settings
 from .models import Product
 from .models import Restaurant
 from .models import RestaurantMenuItem
-from .models import Order, OrderItem
+from .models import Order, OrderItem, ProductCategory
 
 
 class RestaurantMenuItemInline(admin.TabularInline):
@@ -142,3 +142,8 @@ class OrderAdmin(admin.ModelAdmin):
 class OrderItemAdmin(admin.ModelAdmin):
     model = OrderItem
     list_display = ('product', 'quantity', 'price')
+
+
+@admin.register(ProductCategory)
+class ProductCategoryAdmin(admin.ModelAdmin):
+    pass

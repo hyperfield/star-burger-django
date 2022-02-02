@@ -11,6 +11,7 @@ from django.conf import settings
 
 from foodcartapp.models import Product, Restaurant, Order
 from geolocations.models import Location
+from geopy import distance
 
 import requests
 
@@ -162,7 +163,6 @@ def get_coords(entity_address):
 
 @user_passes_test(is_manager, login_url='restaurateur:login')
 def view_orders(request):
-    from geopy import distance
     orders = Order.objects.with_total_prices().\
         prefetch_related("items__product__menu_items__restaurant")\
         .filter(status__in=["pending", "processing"])
