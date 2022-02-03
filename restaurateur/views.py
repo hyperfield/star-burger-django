@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models.query import Prefetch
 from django.shortcuts import redirect, render
 from django.views import View
 from django.urls import reverse_lazy
@@ -9,7 +10,7 @@ from django.contrib.auth import views as auth_views
 
 from django.conf import settings
 
-from foodcartapp.models import Product, Restaurant, Order
+from foodcartapp.models import Product, Restaurant, Order, OrderItem
 from geolocations.models import Location
 from geopy import distance
 
@@ -117,7 +118,7 @@ def fetch_coordinates(apikey, address):
         response.json()['response']['GeoObjectCollection']['featureMember']
 
     if not found_places:
-        return None
+        return None, None
 
     most_relevant = found_places[0]
     lon, lat = most_relevant['GeoObject']['Point']['pos'].split(" ")
@@ -126,14 +127,14 @@ def fetch_coordinates(apikey, address):
 
 # Intersect restaurants availability for each order_item to show only
 # restaurants in which all order items are available.
-def intersect_restaurants(restaurants_sets):
-    if len(restaurants_sets) == 0:
+def intersect_restaurants(menu_items_sets):
+    if len(menu_items_sets) == 0:
         return []
     initial_restaurants_set = set([menu_item.restaurant for menu_item
-                                   in restaurants_sets[0]])
-    if len(restaurants_sets) <= 1:
+                                   in menu_items_sets[0]])
+    if len(menu_items_sets) <= 1:
         return initial_restaurants_set
-    for restaurants_entry in restaurants_sets[1:]:
+    for restaurants_entry in menu_items_sets[1:]:
         other_restaurants_set = set([menu_item.restaurant for menu_item
                                      in restaurants_entry
                                      if menu_item.availability])
@@ -142,22 +143,26 @@ def intersect_restaurants(restaurants_sets):
     return list(initial_restaurants_set)
 
 
-def get_coords(entity_address):
+def get_coords(locations, entity_address):
     # There can be only one unique location
-    location = Location.objects.filter(address=entity_address)[0]
-    longitude, latitude = location.longitude, location.latitude
+    latitude, longitude = None, None
+    for location in locations:
+        if entity_address != location.address:
+            continue
+        else:
+            longitude, latitude = location.longitude, location.latitude
     if not longitude:
         longitude, latitude = fetch_coordinates(
             settings.YANDEX_GEOCODER_API_KEY, entity_address
             )
         if not longitude:
-            return longitude
+            return latitude, longitude
 
         Location.objects.create(
             address=entity_address,
             latitude=latitude,
             longitude=longitude,
-        )
+            )
     return latitude, longitude
 
 
@@ -167,29 +172,30 @@ def view_orders(request):
         prefetch_related("items__product__menu_items__restaurant")\
         .filter(status__in=["pending", "processing"])
     orders_with_restaurants = []
-    checked_addrs = []
+    needed_order_addrs = [order.address for order in orders]
     for order in orders:
-        restaurants_sets = [order_item.product.menu_items.all()
-                            for order_item in order.items.all()]
-        available_restaurants = intersect_restaurants(restaurants_sets)
-
+        menu_items_sets = [order_item.product.menu_items.all()
+                           for order_item in order.items.all()]
+        available_restaurants = intersect_restaurants(menu_items_sets)
+        needed_rest_addrs = [restaurant.address for restaurant
+                             in available_restaurants]
+        needed_addrs = needed_order_addrs + needed_rest_addrs
+        needed_locations = Location.objects.filter(
+                            address__in=needed_addrs
+                            )
         rest_with_dist = []
         client_coords = None
         for restaurant in available_restaurants:
             rest_addr = restaurant.address
-            if rest_addr not in checked_addrs:
-                checked_addrs.append(rest_addr)
-                rest_coords = get_coords(rest_addr)
-                if not rest_coords:
-                    continue
+            rest_coords = get_coords(needed_locations, rest_addr)
+            if not rest_coords:
+                continue
 
+            if not client_coords:
+                client_addr = order.address
+                client_coords = get_coords(needed_locations, client_addr)
                 if not client_coords:
-                    client_addr = order.address
-                    if client_addr not in checked_addrs:
-                        checked_addrs.append(client_addr)
-                        client_coords = get_coords(client_addr)
-                        if not client_coords:
-                            break
+                    break
 
             dist_km = distance.distance(client_coords, rest_coords).km
             rest_with_dist.append(
