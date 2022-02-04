@@ -127,20 +127,23 @@ def fetch_coordinates(apikey, address):
 
 # Intersect restaurants availability for each order_item to show only
 # restaurants in which all order items are available.
-def intersect_restaurants(menu_items_sets):
-    if len(menu_items_sets) == 0:
+def intersect_restaurants(cookable_menu_items_for_order_by_products_sets):
+    if len(cookable_menu_items_for_order_by_products_sets) == 0:
         return []
-    initial_restaurants_set = set([menu_item.restaurant for menu_item
-                                   in menu_items_sets[0]])
-    if len(menu_items_sets) <= 1:
-        return initial_restaurants_set
-    for restaurants_entry in menu_items_sets[1:]:
-        other_restaurants_set = set([menu_item.restaurant for menu_item
-                                     in restaurants_entry
-                                     if menu_item.availability])
-        initial_restaurants_set =\
-            initial_restaurants_set & other_restaurants_set
-    return list(initial_restaurants_set)
+    first_cookable_menu_items_for_order_by_products_set = \
+        set([menu_item.restaurant for menu_item
+            in cookable_menu_items_for_order_by_products_sets[0]])
+    if len(cookable_menu_items_for_order_by_products_sets) <= 1:
+        return first_cookable_menu_items_for_order_by_products_set
+
+    for current_set in cookable_menu_items_for_order_by_products_sets[1:]:
+        other_cookable_menu_items_for_order_by_products_set = \
+            set([menu_item.restaurant for menu_item
+                in current_set if menu_item.availability])
+        first_cookable_menu_items_for_order_by_products_set = \
+            first_cookable_menu_items_for_order_by_products_set & \
+            other_cookable_menu_items_for_order_by_products_set
+    return list(first_cookable_menu_items_for_order_by_products_set)
 
 
 def get_coords(locations, entity_address):
@@ -149,20 +152,20 @@ def get_coords(locations, entity_address):
     for location in locations:
         if entity_address != location.address:
             continue
-        else:
-            longitude, latitude = location.longitude, location.latitude
+        longitude, latitude = location.longitude, location.latitude
+    if longitude:
+        return latitude, longitude
+    longitude, latitude = fetch_coordinates(
+        settings.YANDEX_GEOCODER_API_KEY, entity_address
+        )
     if not longitude:
-        longitude, latitude = fetch_coordinates(
-            settings.YANDEX_GEOCODER_API_KEY, entity_address
-            )
-        if not longitude:
-            return latitude, longitude
+        return latitude, longitude
 
-        Location.objects.create(
-            address=entity_address,
-            latitude=latitude,
-            longitude=longitude,
-            )
+    Location.objects.create(
+        address=entity_address,
+        latitude=latitude,
+        longitude=longitude,
+        )
     return latitude, longitude
 
 
@@ -174,9 +177,10 @@ def view_orders(request):
     orders_with_restaurants = []
     needed_order_addrs = [order.address for order in orders]
     for order in orders:
-        menu_items_sets = [order_item.product.menu_items.all()
-                           for order_item in order.items.all()]
-        available_restaurants = intersect_restaurants(menu_items_sets)
+        cookable_by_restautants_sets = [order_item.product.menu_items.all()
+                                        for order_item in order.items.all()]
+        available_restaurants = \
+            intersect_restaurants(cookable_by_restautants_sets)
         needed_rest_addrs = [restaurant.address for restaurant
                              in available_restaurants]
         needed_addrs = needed_order_addrs + needed_rest_addrs
