@@ -150,9 +150,9 @@ def get_coords(locations, entity_address):
     # There can be only one unique location
     latitude, longitude = None, None
     for location in locations:
-        if entity_address != location.address:
-            continue
-        longitude, latitude = location.longitude, location.latitude
+        if entity_address == location.address:
+            longitude, latitude = location.longitude, location.latitude
+            break
     if longitude:
         return latitude, longitude
     longitude, latitude = fetch_coordinates(
