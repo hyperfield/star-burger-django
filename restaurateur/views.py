@@ -175,18 +175,21 @@ def view_orders(request):
         prefetch_related("items__product__menu_items__restaurant")\
         .filter(status__in=["pending", "processing"])
     orders_with_restaurants = []
+    needed_rest_addrs = \
+        [restaurant.address for restaurant in Restaurant.objects.all()]
     needed_order_addrs = [order.address for order in orders]
-    for order in orders:
-        cookable_by_restautants_sets = [order_item.product.menu_items.all()
-                                        for order_item in order.items.all()]
-        available_restaurants = \
-            intersect_restaurants(cookable_by_restautants_sets)
-        needed_rest_addrs = [restaurant.address for restaurant
-                             in available_restaurants]
-        needed_addrs = needed_order_addrs + needed_rest_addrs
-        needed_locations = Location.objects.filter(
+    needed_addrs = needed_order_addrs + needed_rest_addrs
+    needed_locations = Location.objects.filter(
                             address__in=needed_addrs
                             )
+    for order in orders:
+        cookable_menu_items_for_order_by_products_sets = \
+            [order_item.product.menu_items.all()
+                for order_item in order.items.all()]
+        available_restaurants = \
+            intersect_restaurants(
+                cookable_menu_items_for_order_by_products_sets
+                )
         rest_with_dist = []
         client_coords = None
         for restaurant in available_restaurants:
