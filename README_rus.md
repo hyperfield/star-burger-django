@@ -1,73 +1,73 @@
-# Food delivery network Star Burger
+# Сайт доставки еды Star Burger
 
-This is a website of the restaurant chain Star Burger. Here one can order supreme burgers delivered straight to your door.
+Это сайт сети ресторанов Star Burger. Здесь можно заказать превосходные бургеры с доставкой на дом.
 
 ![скриншот сайта](https://dvmn.org/filer/canonical/1594651635/686/)
 
 
-The Star Burger network consists of several restaurants operating under a single franchise. All restaurants have the same menu and the same prices. Simply choose a meal from the menu on the website and specify an address for delivery. We will find the restaurant nearest to you, will cook your food for you and will deliver it to you.
+Сеть Star Burger объединяет несколько ресторанов, действующих под единой франшизой. У всех ресторанов одинаковое меню и одинаковые цены. Просто выберите блюдо из меню на сайте и укажите место доставки. Мы сами найдём ближайший к вам ресторан, всё приготовим и привезём.
 
-The website has three independent interfaces. The first one is the public interface, where one can choose meals from the menu and quickly place an order without registration.
+На сайте есть три независимых интерфейса. Первый — это публичная часть, где можно выбрать блюда из меню, и быстро оформить заказ без регистрации и SMS.
 
-The second interface is mean for the order manager. Here, order processing happens. The manager sees incoming orders and calls the customers to confirm their orders, where necessary. Then the operator chooses the nerarest restaurant and passes the order for processing (i.e. for cooking and delivery).
+Второй интерфейс предназначен для менеджера. Здесь происходит обработка заказов. Менеджер видит поступившие новые заказы и первым делом созванивается с клиентом, чтобы подтвердить заказ. После оператор выбирает ближайший ресторан и передаёт туда заказ на исполнение. Там всё приготовят и сами доставят еду клиенту.
 
-The third interface is the admin panel. It is mainly used by the website developers. The order manager also comes here from time to time, such as to update the restaurants' menus.
+Третий интерфейс — это админка. Преимущественно им пользуются программисты при разработке сайта. Также сюда заходит менеджер, чтобы обновить меню ресторанов Star Burger.
 
-## How to launch the development version of the website
+## Как запустить dev-версию сайта
 
-To launch the development version, you need to launch the backend part and the frontend part.
+Для запуска сайта нужно запустить **одновременно** бэкенд и фронтенд, в двух терминалах.
 
-### How to assemble the backend
+### Как собрать бэкенд
 
-Download the code:
+Скачайте код:
 ```sh
 git clone https://github.com/hyperfield/star-burger-django.git
 ```
 
-Go to the project directory:
+Перейдите в каталог проекта:
 ```sh
 cd star-burger
 ```
 
-[Install Python](https://www.python.org/), if not already done.
+[Установите Python](https://www.python.org/), если этого ещё не сделали.
 
-Make sure that `python` is intalled and setup correctly. Launch it in the command line:
+Проверьте, что `python` установлен и корректно настроен. Запустите его в командной строке:
 ```sh
 python --version
 ```
-**Important!** The Python version must be no less than 3.6.
+**Важно!** Версия Python должна быть не ниже 3.6.
 
-It is possible that, instead of the command `python`, here and in this README you'll have to use `python3`. This depends on your operating system and on how old your Python version is.
+Возможно, вместо команды `python` здесь и в остальных инструкциях этого README придётся использовать `python3`. Зависит это от операционной системы и от того, установлен ли у вас Python старой второй версии. 
 
-Create a virtual environment in the project directory:
+В каталоге проекта создайте виртуальное окружение:
 ```sh
 python -m venv venv
 ```
-Activate it. It is done with different commands in different operating systems:
+Активируйте его. На разных операционных системах это делается разными командами:
 - Windows: `.\venv\Scripts\activate`
 - MacOS/Linux: `source venv/bin/activate`
 
 
-Install the dependencies and the virtual environment:
+Установите зависимости в виртуальное окружение:
 ```sh
 pip install -r requirements.txt
 ```
 
-Create the SQLine database file and migrate the database as follows:
+Создайте файл базы данных SQLite и отмигрируйте её следующей командой:
 
 ```sh
 python manage.py migrate
 ```
 
-Launch the backend server:
+Запустите сервер:
 
 ```sh
 python manage.py runserver
 ```
 
-Open the website in a webbrowser at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). If you see just an empty page, then there's nothing wrong with this, this means that the frontend has not yet been assembled.
+Откройте сайт в браузере по адресу [http://127.0.0.1:8000/](http://127.0.0.1:8000/). Если вы увидели пустую белую страницу, то не пугайтесь, выдохните. Просто фронтенд пока ещё не собран. Переходите к следующему разделу README.
 
-### Assemble the frontend
+### Собрать фронтенд
 
 **Откройте новый терминал**. Для работы сайта в dev-режиме необходима одновременная работа сразу двух программ `runserver` и `parcel`. Каждая требует себе отдельного терминала. Чтобы не выключать `runserver` откройте для фронтенда новый терминал и все нижеследующие инструкции выполняйте там.
 
