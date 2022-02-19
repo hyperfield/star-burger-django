@@ -69,16 +69,11 @@ Open the website in a webbrowser at [http://127.0.0.1:8000/](http://127.0.0.1:80
 
 ### Assemble the frontend
 
-**Откройте новый терминал**. Для работы сайта в dev-режиме необходима одновременная работа сразу двух программ `runserver` и `parcel`. Каждая требует себе отдельного терминала. Чтобы не выключать `runserver` откройте для фронтенда новый терминал и все нижеследующие инструкции выполняйте там.
-
-[Установите Node.js](https://nodejs.org/en/), если у вас его ещё нет.
-
-Проверьте, что Node.js и его пакетный менеджер корректно установлены. Если всё исправно, то терминал выведет их версии:
-
-```sh
+Open up a new console. [Install Node.js](https://nodejs.org/en/), unless you already have it on your system. Ensure that Node.js and its package manager are properly installed. If everything is fine then the console will output their version numbers:
+```
 nodejs --version
 # v12.18.2
-# Если ошибка, попробуйте node:
+# If the above doesn't work, try:
 node --version
 # v12.18.2
 
@@ -86,70 +81,55 @@ npm --version
 # 6.14.5
 ```
 
-Версия `nodejs` должна быть не младше 10.0. Версия `npm` не важна. Как обновить Node.js читайте в статье: [How to Update Node.js](https://phoenixnap.com/kb/update-node-js-version).
+The version of `nodejs` should be no older than 10.0. The version of `npm` is not important. Consider this article: [How to Update Node.js](https://phoenixnap.com/kb/update-node-js-version).
 
-Установите необходимые пакеты. В каталоге проекта запустите:
+Now install the necessary packages by issuing this command:
 
 ```sh
 npm install --dev
 ```
 
-Установите [Parcel](https://parceljs.org/). Это упаковщик веб-приложений. Он похож на [Webpack](https://webpack.js.org/), но совсем не требует настроек:
+Install [Parcel](https://parceljs.org/), a web application packer, which is similar to [Webpack](https://webpack.js.org/), but requires no setting up:
 
 ```sh
 npm install -g parcel@latest  # понадобятся права администратора `sudo`
 ```
 
-Вам нужна вторая версия Parcel. Проверьте, что `parcel` установлен и его версию в командной строке:
+You need the second version of Parcel. Make sure that `parcel` is installed and check its version in the command line:
 
 ```sh
 $ parcel --version
 2.0.0-beta.2
 ```
 
-Почти всё готово. Теперь запустите сборку фронтенда и не выключайте. Parcel будет работать в фоне и следить за изменениями в JS-коде:
+Almost all is ready. Now proceed to building the frontend:
 
 ```sh
 parcel watch bundles-src/index.js --dist-dir bundles --public-url="./"
 ```
 
-Дождитесь завершения первичной сборки. Это вполне может занять 10 и более секунд. О готовности вы узнаете по сообщению в консоли:
+Once done, the console will output:
 
 ```
 ✨  Built in 10.89s
 ```
 
-Parcel будет следить за файлами в каталоге `bundles-src`. Сначала он прочитает содержимое `index.js` и узнает какие другие файлы он импортирует. Затем Parcel перейдёт в каждый из этих подключенных файлов и узнает что импортируют они. И так далее, пока не закончатся файлы. В итоге Parcel получит полный список зависимостей. Дальше он соберёт все эти сотни мелких файлов в большие бандлы `bundles/index.js` и `bundles/index.css`. Они полностью самодостаточно и потому пригодны для запуска в браузере. Именно эти бандлы сервер отправит клиенту.
-
-Теперь если зайти на страницу  [http://127.0.0.1:8000/](http://127.0.0.1:8000/), то вместо пустой страницы вы увидите:
+Now if you go to [http://127.0.0.1:8000/](http://127.0.0.1:8000/), then, instead of a blank page, you should see this:
 
 ![](https://dvmn.org/filer/canonical/1594651900/687/)
 
-Каталог `bundles` в репозитории особенный — туда Parcel складывает результаты своей работы. Эта директория предназначена исключительно для результатов сборки фронтенда и потому исключёна из репозитория с помощью `.gitignore`.
+## How to launch the production version of the website
 
-**Сбросьте кэш браузера <kbd>Ctrl-F5</kbd>.** Браузер при любой возможности старается кэшировать файлы статики: CSS, картинки и js-код. Порой это приводит к странному поведению сайта, когда код уже давно изменился, но браузер этого не замечает и продолжает использовать старую закэшированную версию. В норме Parcel решает эту проблему самостоятельно. Он следит за пересборкой фронтенда и предупреждает JS-код в браузере о необходимости подтянуть свежий код. Но если вдруг что-то у вас идёт не так, то начните ремонт со сброса браузерного кэша, жмите <kbd>Ctrl-F5</kbd>.
-
-
-## Как запустить prod-версию сайта
-
-Собрать фронтенд:
+Assemble the frontend:
 
 ```sh
 parcel build bundles-src/index.js --dist-dir bundles --public-url="./"
 ```
 
-Настроить бэкенд: создать файл `.env` в каталоге `star_burger/` со следующими настройками:
+Set up the backend: create the file `.env` in the directory `star_burger/` with the following settings:
 
-- `DJANGO_SETTINGS_MODULE` - путь к файлу настроек Django.
-- `DEBUG` — дебаг-режим. Поставьте `False`.
-- `SECRET_KEY` — секретный ключ проекта. Он отвечает за шифрование на сайте. Например, им зашифрованы все пароли на вашем сайте. Не стоит использовать значение по-умолчанию, **замените на своё**.
-- `ALLOWED_HOSTS` — [см. документацию Django](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts).
-- `YANDEX_GEOCODER_API_KEY` - API-ключ от сервиса Yandex Geocoder. Сервис используется для вычисления расстояний между ресторанами и клиентами. Ключ можно получить по [этому адресу](https://developer.tech.yandex.ru/).
-
-## Цели проекта
-
-Код написан в учебных целях — это урок в курсе по Python и веб-разработке на сайте [Devman](https://dvmn.org). За основу был взят код проекта [FoodCart](https://github.com/Saibharath79/FoodCart).
-
-Где используется репозиторий:
-
-- Второй и третий урок [учебного модуля Django](https://dvmn.org/modules/django/)
+- `DJANGO_SETTINGS_MODULE` — path to the Django settings.
+- `DEBUG` — the debug mode. Set it to `False`.
+- `SECRET_KEY` — the project secret key for Django. It is responsible for the encryption on the website. For example, it is used to encrypt all passwords on your website. It is not recommended to use the default value, **update it to your own value**.
+- `ALLOWED_HOSTS` — [see the Django manual](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts).
+- `YANDEX_GEOCODER_API_KEY` - the API-key for the Yandex Geocoder service. The service is used for calculating of the distances between the restaurants and their clients. The key can be obtained at [this address](https://developer.tech.yandex.ru/).
