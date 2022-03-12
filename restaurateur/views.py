@@ -153,7 +153,7 @@ def get_coords(locations, entity_address):
         if entity_address == location.address:
             longitude, latitude = location.longitude, location.latitude
             break
-    if longitude:
+    else:
         return latitude, longitude
     longitude, latitude = fetch_coordinates(
         settings.YANDEX_GEOCODER_API_KEY, entity_address
