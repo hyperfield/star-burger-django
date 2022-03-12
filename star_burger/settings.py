@@ -1,14 +1,12 @@
 import os
-
 import dj_database_url
-
 from environs import Env
+import rollbar
 
 env = Env()
 env.read_env()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 SECRET_KEY = env('SECRET_KEY', 'etirgvonenrfnoerngorenogneongg334g')
@@ -39,6 +37,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
 ROOT_URLCONF = 'star_burger.urls'
@@ -125,4 +124,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-YANDEX_GEOCODER_API_KEY = env.str("YANDEX_GEOCODER_API_KEY")
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+YANDEX_GEOCODER_API_KEY = env.str('YANDEX_GEOCODER_API_KEY')
+
+ROLLBAR = {
+    'access_token': env.str('ROLLBAR_KEY'),
+    'environment': 'development' if DEBUG else 'production',
+    'root': BASE_DIR,
+    'host': django-serv,
+}
+
+rollbar.init(**ROLLBAR)
