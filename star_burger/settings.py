@@ -133,7 +133,7 @@ ROLLBAR = {
     'access_token': env.str('ROLLBAR_KEY'),
     'environment': 'development' if DEBUG else 'production',
     'root': BASE_DIR,
-    'host': django-serv,
+    'host': 'django-serv',
 }
 
 rollbar.init(**ROLLBAR)
