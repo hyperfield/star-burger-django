@@ -133,3 +133,7 @@ Set up the backend: create the file `.env` in the directory `star_burger/` with 
 - `SECRET_KEY` — the project secret key for Django. It is responsible for the encryption on the website. For example, it is used to encrypt all passwords on your website. It is not recommended to use the default value, **update it to your own value**.
 - `ALLOWED_HOSTS` — [see the Django manual](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts).
 - `YANDEX_GEOCODER_API_KEY` - the API-key for the Yandex Geocoder service. The service is used for calculating of the distances between the restaurants and their clients. The key can be obtained at [this address](https://developer.tech.yandex.ru/).
+
+
+## Environment variables
+
