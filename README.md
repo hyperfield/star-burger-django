@@ -154,6 +154,15 @@ Now if you go to [http://127.0.0.1:8000/](http://127.0.0.1:8000/), then, instead
 
 ![](https://dvmn.org/filer/canonical/1594651900/687/)
 
+## Automatic deploy
+
+You can use the deploy script `deploy.sh` on the server after installing `nginx` and `gunicorn` on the server. Once these are installed, run
+
+    sudo ./deploy.sh
+
+within the project directory. This script assembles the frontend, collects Django statics, downloads the project from github, applies Django
+database migrations, installs the Python requirements (libraries) for the project, and restarts the star-burger systemd service.
+
 ## How to launch the production version of the website
 
 Assemble the frontend:
