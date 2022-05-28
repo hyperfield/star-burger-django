@@ -16,20 +16,20 @@ class NavBarComponent extends Component{
           <div>
             <div className="collapse navbar-collapse" id="myNavbar">
               <ul className="nav navbar-nav">
-                <li><a href="#menu">Меню</a></li>
-                <li><a href="#contact_us">Контакты</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#contact_us">Contacts</a></li>
               </ul>
               <ul className="nav navbar-nav navbar-right">
                 <li>
-                  <a href="#">Блюд в заказе: {this.props.totalItems ? <span>{this.props.totalItems}</span> : "" }</a>
+                  <a href="#">Items in your order: {this.props.totalItems ? <span>{this.props.totalItems}</span> : "" }</a>
                 </li>
                 <li>
-                  <a href="#" className={ this.props.totalAmount ? 'currency' : '' }>Стоимость: {this.props.totalAmount ? <span>{this.props.totalAmount}</span> : "" }</a>
+                  <a href="#" className={ this.props.totalAmount ? 'currency' : '' }>Total amount: {this.props.totalAmount ? <span>{this.props.totalAmount}</span> : "" }</a>
                 </li>
                 <li style={{float:'right'}}>
                   <a onClick={this.props.handleCartShow}>
                     <button type="button" href="#" className="btn btn-primary btn-sm">
-                      <span className="glyphicon glyphicon-shopping-cart"></span> Корзина
+                      <span className="glyphicon glyphicon-shopping-cart"></span> Cart
                     </button>
                   </a>
                 </li>

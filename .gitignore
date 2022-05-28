@@ -149,3 +149,5 @@ cython_debug/
 # Other files
 README_rus.md
 staticfiles/
+devman.pub
+

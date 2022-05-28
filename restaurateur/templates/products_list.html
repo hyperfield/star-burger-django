@@ -1,11 +1,11 @@
 {% extends 'base_restaurateur_page.html' %}
 
-{% block title %}Меню | Star Burger{% endblock %}
+{% block title %}Menu | Star Burger{% endblock %}
 
 {% block content %}
 
   <center>
-    <h2>Ваше меню</h2>
+    <h2>Your menu</h2>
   </center>
 
   <hr/>
@@ -17,13 +17,13 @@
    <table class="table table-responsive">
       <tr>
         <th></th>
-        <th>Название</th>
-        <th>Категория</th>
-        <th>Цена</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
         {% for restaurant in restaurants %}
           <th>{{ restaurant.name }}</th>
         {% endfor %}
-        <th>Действия</th>
+        <th>Actions</th>
       </tr>
 
       {% for product, availability in products_with_restaurants %}
@@ -57,13 +57,13 @@
             </td>
           {% endfor %}
           <td>
-            <a href="{% url 'admin:foodcartapp_product_change' product.id %}">ред.</a>
+            <a href="{% url 'admin:foodcartapp_product_change' product.id %}">edit</a>
           </td>
         </tr>
       {% endfor %}
     </table>
 
-    <a href="{% url 'admin:foodcartapp_product_add' %}" class="btn btn-default">Добавить</a>
+    <a href="{% url 'admin:foodcartapp_product_add' %}" class="btn btn-default">add</a>
 
   </div>
 {% endblock %}

@@ -22,17 +22,17 @@ DIST_ROUND_DIGITS = 3
 
 class Login(forms.Form):
     username = forms.CharField(
-        label='Логин', max_length=75, required=True,
+        label='Login', max_length=75, required=True,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': 'Укажите имя пользователя'
+            'placeholder': 'Enter your username'
         })
     )
     password = forms.CharField(
-        label='Пароль', max_length=75, required=True,
+        label='Password', max_length=75, required=True,
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
-            'placeholder': 'Введите пароль'
+            'placeholder': 'Enter your password'
         })
     )
 

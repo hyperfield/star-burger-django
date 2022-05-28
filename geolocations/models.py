@@ -22,8 +22,8 @@ class Location(models.Model):
     )
 
     class Meta:
-        verbose_name = 'геолокация'
-        verbose_name_plural = 'геолокации'
+        verbose_name = 'geolocation'
+        verbose_name_plural = 'geolocations'
 
     def __str__(self):
         return self.address

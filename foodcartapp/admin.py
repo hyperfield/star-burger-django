@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.shortcuts import reverse
-from django.templatetags.static import static   
+from django.templatetags.static import static
 from django.utils.html import format_html
 from django.utils.http import url_has_allowed_host_and_scheme
 
@@ -93,16 +93,16 @@ class ProductAdmin(admin.ModelAdmin):
 
     def get_image_preview(self, obj):
         if not obj.image:
-            return 'выберите картинку'
+            return 'select an image'
         return format_html('<img src="{url}" style="max-height: 200px;"/>', url=obj.image.url)
-    get_image_preview.short_description = 'превью'
+    get_image_preview.short_description = 'preview'
 
     def get_image_list_preview(self, obj):
         if not obj.image or not obj.id:
-            return 'нет картинки'
+            return 'no image'
         edit_url = reverse('admin:foodcartapp_product_change', args=(obj.id,))
         return format_html('<a href="{edit_url}"><img src="{src}" style="max-height: 50px;"/></a>', edit_url=edit_url, src=obj.image.url)
-    get_image_list_preview.short_description = 'превью'
+    get_image_list_preview.short_description = 'preview'
 
 
 class ProductInline(admin.TabularInline):
@@ -115,8 +115,8 @@ class OrderInline(admin.TabularInline):
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
-    verbose_name = u"Элемент заказа"
-    verbose_name_plural = u"Элементы заказа"
+    verbose_name = u"Order element"
+    verbose_name_plural = u"Order elements"
     list_display = ('product', 'quantity', 'price')
 
 
