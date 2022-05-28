@@ -78,4 +78,9 @@ else
   exit $exit_code
 fi
 
+git_commit_id=$(git rev-parse --short HEAD)
+rb_key=$(grep -i 'ROLLBAR_KEY=' /etc/systemd/system/star-burger.env | cut -f2 -d'=' | cut -f2 -d'"')
+curl -H 'Content-Type: application/json' -H "X-Rollbar-Access-Token: $rb_key" --data "{\"environment\":
+\"development\", \"revision\": \"$git_commit_id\", \"local_username\": \"django\"}"  --request POST https://api.rollbar.com/api/1/deploy
+
 echo "Deployment complete"
