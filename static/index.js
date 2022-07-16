@@ -65145,7 +65145,7 @@ class Product extends _react.Component {
             className: !this.state.isAdded ? "btn btn-primary" : "btn btn-success",
             type: "button",
             onClick: (event)=>this.addToCart(this.state.quantity)
-        }, !this.state.isAdded ? "В корзину" : "✔ Добавлено"))));
+        }, !this.state.isAdded ? "Add to cart" : "✔ Added"))));
     }
 }
 exports.default = Product;

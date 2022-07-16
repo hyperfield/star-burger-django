@@ -83,7 +83,7 @@ class CheckoutModal extends Component{
             <Button id="order-submit-btn" className="btn btn-primary" type="submit" disabled={ this.state.waitTillCheckoutEnds }>
               Отправить
             </Button>
-            <Button onClick={this.props.handleCheckoutModalClose}>Закрыть</Button>
+            <Button onClick={this.props.handleCheckoutModalClose}>Close</Button>
           </Modal.Footer>
         </form>
       </Modal>

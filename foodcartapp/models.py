@@ -81,7 +81,7 @@ class Product(models.Model):
     )
     description = models.TextField(
         'Description',
-        max_length=200,
+        max_length=300,
         blank=True,
     )
 

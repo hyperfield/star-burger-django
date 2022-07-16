@@ -2,7 +2,7 @@
 
 This is a website of the restaurant chain Star Burger. Here one can order supreme burgers delivered straight to your door.
 
-![website screenshot]()
+![website screenshot](website_screen.png)
 
 
 The Star Burger network consists of several restaurants operating under a single franchise. All restaurants have the same menu and the same prices. Simply choose a meal from the menu on the website and specify an address for delivery. We will find the restaurant nearest to you, will cook your food for you and will deliver it to you.
@@ -127,8 +127,8 @@ npm install --dev
 
 Install [Parcel](https://parceljs.org/), a web application packer, which is similar to [Webpack](https://webpack.js.org/), but requires no setting up:
 
-```sh
-npm install -g parcel@latest  # понадобятся права администратора `sudo`
+```sudo sh
+npm install -g parcel@latest
 ```
 
 You need the second version of Parcel. Make sure that `parcel` is installed and check its version in the command line:
@@ -150,9 +150,7 @@ Once done, the console will output:
 ✨  Built in 10.89s
 ```
 
-Now if you go to [http://127.0.0.1:8000/](http://127.0.0.1:8000/), then, instead of a blank page, you should see this:
-
-![]()
+Now if you go to [http://127.0.0.1:8000/](http://127.0.0.1:8000/), then, instead of a blank page, you should see the website front page, albeit not containing any products, which need to be added via the Django admin panel accessible by [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin).
 
 ## Automatic deploy
 

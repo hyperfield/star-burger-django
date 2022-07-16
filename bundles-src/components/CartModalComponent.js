@@ -62,7 +62,7 @@ class CartModalComponent extends Component{
     return (
       <Modal show={this.props.showCart} onHide={this.props.handleCartClose}>
         <Modal.Header closeButton>
-          <center><Modal.Title>Ваша корзина</Modal.Title></center>
+          <center><Modal.Title>Your cart</Modal.Title></center>
         </Modal.Header>
         <Modal.Body>
           {view}
@@ -73,9 +73,9 @@ class CartModalComponent extends Component{
             onClick={event => this.handleCheckout()}
             className={this.props.cartItems.length>0 ? "btn btn-danger" : "disabled btn btn-danger"}
           >
-            Оформить заказ
+            Check out
           </Button>
-          <Button onClick={this.props.handleCartClose}>Закрыть</Button>
+          <Button onClick={this.props.handleCartClose}>Close</Button>
         </Modal.Footer>
       </Modal>
     );
