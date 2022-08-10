@@ -131,6 +131,14 @@ Install [Parcel](https://parceljs.org/), a web application packer, which is simi
 npm install -g parcel@latest
 ```
 
+or
+
+```sudo sh
+npm install -g parcel@2.0.0-beta.2
+```
+
+in the event that the front-end is not successfully accembled by the subsequent command.
+
 You need the second version of Parcel. Make sure that `parcel` is installed and check its version in the command line:
 
 ```sh
