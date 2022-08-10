@@ -322,7 +322,7 @@ class App extends Component {
             <div className="row">
               <div className="col-6">
                 <center>
-                  <h2>Меню пока пусто...</h2>
+                  <h2>The menu is currently empty</h2>
                 </center>
               </div>
             </div>

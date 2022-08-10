@@ -45,10 +45,10 @@ class CartModalComponent extends Component{
           <thead>
             <tr>
               <th></th>
-              <th>Название</th>
-              <th>Цена</th>
-              <th>Количество</th>
-              <th>Итого</th>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total</th>
               <th></th>
             </tr>
           </thead>

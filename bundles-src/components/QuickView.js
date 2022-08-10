@@ -24,15 +24,15 @@ class QuickView extends Component{
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Название:</td>
+                    <td>Item:</td>
                     <td>{this.props.product.name}</td>
                   </tr>
                   <tr>
-                    <td>Подробнее:</td>
+                    <td>Description:</td>
                     <td>{this.props.product.description}</td>
                   </tr>
                   <tr>
-                    <td>Цена:</td>
+                    <td>Price:</td>
                     <td>{this.props.product.price}</td>
                   </tr>
                 </tbody>
