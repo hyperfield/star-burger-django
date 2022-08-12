@@ -24,7 +24,7 @@ class NavBarComponent extends Component{
                   <a href="#">Items in your order: {this.props.totalItems ? <span>{this.props.totalItems}</span> : "" }</a>
                 </li>
                 <li>
-                  <a href="#" className={ this.props.totalAmount ? 'currency' : '' }>Total amount: {this.props.totalAmount ? <span>{this.props.totalAmount}</span> : "" }</a>
+                  <a href="#" className={ this.props.totalAmount ? 'currency' : '' }>Total amount: {this.props.totalAmount ? <span>{this.props.totalAmount.toFixed(2)}</span> : "" }</a>
                 </li>
                 <li style={{float:'right'}}>
                   <a onClick={this.props.handleCartShow}>
