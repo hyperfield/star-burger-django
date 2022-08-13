@@ -29,7 +29,7 @@ class CartModalComponent extends Component{
           <td><img src={product.image} style={imgStyle} /></td>
           <td>{product.name}</td>
           <td className="currency">{product.price}</td>
-          <td>{product.quantity} шт.</td>
+          <td>{product.quantity}</td>
           <td className="currency">{product.quantity * product.price}</td>
           <td><a href="#" onClick={this.props.removeProduct.bind(this, product.id)}>×</a></td>
         </tr>
