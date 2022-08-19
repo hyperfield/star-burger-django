@@ -9,8 +9,8 @@ env.read_env()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-SECRET_KEY = env('SECRET_KEY', 'etirgvonenrfnoerngorenogneongg334g')
-DEBUG = env.bool('DEBUG', True)
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost'])
 
@@ -80,11 +80,12 @@ WSGI_APPLICATION = 'star_burger.wsgi.application'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-DATABASES = {}
-DATABASES['default'] = dj_database_url.parse(
-    env.str("POSTGRES"),
-    conn_max_age=600
-    )
+DATABASES = {
+    'default': dj_database_url.parse(
+    	env.str("POSTGRES"),
+    	conn_max_age=600
+    ),
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
