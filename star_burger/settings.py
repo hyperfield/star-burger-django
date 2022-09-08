@@ -10,12 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 SECRET_KEY = env('SECRET_KEY')
-<<<<<<< HEAD
-DEBUG = env.bool('DEBUG', False)
-=======
 DEBUG = env.bool('DEBUG')
->>>>>>> e18370cef3c441f4944c5f5e7a34d4235fbf830e
-
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost'])
 
 INSTALLED_APPS = [
