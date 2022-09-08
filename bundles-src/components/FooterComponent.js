@@ -11,16 +11,16 @@ const FooterComponent = props => {
   }
 
   // FIXME should be moved to backend db ?
-  let email = 'office@star-burger.com';
-  let phoneNumber = '+7 901 999-99-99';
-  let address = 'г.Москва, Старый Арбарт, 66';
+  let email = 'office@star-burger.xyz';
+  let phoneNumber = '+33 123456789';
+  let address = 'Paris, Île-de-France';
 
   return (
     <div style={style}>
       <div className="container">
         <div className="row">
           <div className="col-sm-5">
-            <p>Контакты</p>
+            <p>Contact us</p>
             <p><span className="glyphicon glyphicon-map-marker"></span> {address}</p>
             <p>
               <a href={'tel:' + phoneNumber } style={{color: 'white'}}>

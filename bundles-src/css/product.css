@@ -32,7 +32,7 @@
     margin-bottom: 16px;
   }
   .currency:after {
-    content: " ₽";
+    content: " € ";
   }
   .product .product-name, .product .product-price {
     color: #666;

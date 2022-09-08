@@ -5,7 +5,7 @@ const EmptyCart = (props) =>{
     <div className="container-fluid">
       <center>
         <div className="empty-cart"></div>
-        <h4>Здесь пока пусто...</h4>
+        <h4>Your cart is empty...</h4>
       </center>
     </div>
   )

@@ -56,7 +56,7 @@ class Product extends Component{
             type="button"
             onClick={event => this.addToCart(this.state.quantity)}
           >
-            {!this.state.isAdded ? "В корзину" : "✔ Добавлено"}
+            {!this.state.isAdded ? "Add to cart" : "✔ Added"}
           </button>
         </div>
       </div>

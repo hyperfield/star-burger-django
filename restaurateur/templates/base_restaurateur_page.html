@@ -1,5 +1,5 @@
 <!doctype html>{% load static %}
-<html lang="ru">
+<html lang="en-us">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,7 +9,7 @@
   <title>{% block title %}{% endblock %}</title>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/order-manager.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'order-manager.css' %}"/>
 </head>
 <body>
 
@@ -21,18 +21,18 @@
         </div>
         <ul class="nav navbar-nav">
           <li>
-            <a href="{% url 'restaurateur:ProductsView' %}">Меню</a>
+            <a href="{% url 'restaurateur:ProductsView' %}">Menu</a>
           </li>
           <li>
-            <a href="{% url 'restaurateur:RestaurantView' %}">Рестораны</a>
+            <a href="{% url 'restaurateur:RestaurantView' %}">Restaurant</a>
           </li>
           <li>
-            <a href="{% url 'restaurateur:view_orders' %}">Заказы</a>
+            <a href="{% url 'restaurateur:view_orders' %}">Orders</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="{% url 'restaurateur:logout' %}"><span class="glyphicon glyphicon-log-out"></span> Выйти</a>
+            <a href="{% url 'restaurateur:logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
           </li>
         </ul>
       </div>

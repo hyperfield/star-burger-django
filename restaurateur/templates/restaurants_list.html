@@ -1,44 +1,44 @@
 {% extends 'base_restaurateur_page.html' %}
 
-{% block title %}Рестораны | Star Burger{% endblock %}
+{% block title %}Restaurants | Star Burger{% endblock %}
 
 {% block content %}
 
   <div class="container">
     <center>
-      <h2>Ваши рестораны</h2>
+      <h2>Your restaurants</h2>
     </center>
 
     <hr/>
 
     <table class="table table-responsive">
       <tr>
-        <th>Название</th>
-        <th>Адрес</th>
-        <th>Контактный телефон</th>
-        <th>Действия</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Telephone</th>
+        <th>Actions</th>
       </tr>
 
       {% for restaurant in restaurants %}
         <tr>
           <td>{{ restaurant.name }}</td>
           <td>
-            {{ restaurant.address|default:'пусто' }}</td>
+            {{ restaurant.address|default:'empty' }}</td>
           <td>
             {% if restaurant.contact_phone %}
               <a href="phone:{{ restaurant.contact_phone }}">{{ restaurant.contact_phone }}</a>
             {% else %}
-              пусто
+              empty
             {% endif %}
           </td>
           <td>
-            <a href="{% url 'admin:foodcartapp_restaurant_change' restaurant.id %}">ред.</a>
+            <a href="{% url 'admin:foodcartapp_restaurant_change' restaurant.id %}">edit</a>
           </td>
         </tr>
       {% endfor %}
     </table>
 
-    <a href="{% url 'admin:foodcartapp_restaurant_add' %}" class="btn btn-default">Добавить</a>
+    <a href="{% url 'admin:foodcartapp_restaurant_add' %}" class="btn btn-default">add</a>
 
   </div>
 {% endblock %}

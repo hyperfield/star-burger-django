@@ -29,7 +29,7 @@ class CartModalComponent extends Component{
           <td><img src={product.image} style={imgStyle} /></td>
           <td>{product.name}</td>
           <td className="currency">{product.price}</td>
-          <td>{product.quantity} шт.</td>
+          <td>{product.quantity}</td>
           <td className="currency">{product.quantity * product.price}</td>
           <td><a href="#" onClick={this.props.removeProduct.bind(this, product.id)}>×</a></td>
         </tr>
@@ -45,10 +45,10 @@ class CartModalComponent extends Component{
           <thead>
             <tr>
               <th></th>
-              <th>Название</th>
-              <th>Цена</th>
-              <th>Количество</th>
-              <th>Итого</th>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total</th>
               <th></th>
             </tr>
           </thead>
@@ -62,7 +62,7 @@ class CartModalComponent extends Component{
     return (
       <Modal show={this.props.showCart} onHide={this.props.handleCartClose}>
         <Modal.Header closeButton>
-          <center><Modal.Title>Ваша корзина</Modal.Title></center>
+          <center><Modal.Title>Your cart</Modal.Title></center>
         </Modal.Header>
         <Modal.Body>
           {view}
@@ -73,9 +73,9 @@ class CartModalComponent extends Component{
             onClick={event => this.handleCheckout()}
             className={this.props.cartItems.length>0 ? "btn btn-danger" : "disabled btn btn-danger"}
           >
-            Оформить заказ
+            Check out
           </Button>
-          <Button onClick={this.props.handleCartClose}>Закрыть</Button>
+          <Button onClick={this.props.handleCartClose}>Close</Button>
         </Modal.Footer>
       </Modal>
     );

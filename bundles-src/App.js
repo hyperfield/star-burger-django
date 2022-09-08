@@ -74,7 +74,7 @@ class App extends Component {
       });
 
       if (!response.ok){
-        alert('Ошибка при оформлении заказа. Попробуйте ещё раз или свяжитесь с нами по телефону.');
+        alert('Error with placing your order. Please try again or contact us.');
         return;
       }
       let responseData = await response.json();
@@ -83,11 +83,11 @@ class App extends Component {
         cart: [],
       });
 
-      alert("Заказ оформлен. Вам перезвонят в течение 10 минут.");
+      alert("Your order has been placed. We might call you to confirm your order.");
 
       this.handleCartClose();
     } catch(error){
-      alert('Ошибка при оформлении заказа. Попробуйте ещё раз или свяжитесь с нами по телефону.');
+      alert('Error with placing your order. Please try again or contact us.');
       throw error;
     };
   }
@@ -229,7 +229,7 @@ class App extends Component {
           menuBlocks.push(
             <div style={{marginTop:"50px"}} className="form-group" key={'_popular'}>
               <center>
-                <h2>Популярное</h2>
+                <h2>Popular in the menu</h2>
                 <hr/>
               </center>
 
@@ -307,7 +307,7 @@ class App extends Component {
           { !this.state.products && (
             <div>
               <center>
-                <h2>Меню Star Burger</h2>
+                <h2>Star Burger Menu</h2>
                 <hr/>
               </center>
               <LoadingProducts />
@@ -322,7 +322,7 @@ class App extends Component {
             <div className="row">
               <div className="col-6">
                 <center>
-                  <h2>Меню пока пусто...</h2>
+                  <h2>The menu is currently empty</h2>
                 </center>
               </div>
             </div>

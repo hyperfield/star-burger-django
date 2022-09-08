@@ -2,7 +2,7 @@
 
 This is a website of the restaurant chain Star Burger. Here one can order supreme burgers delivered straight to your door.
 
-![скриншот сайта](https://dvmn.org/filer/canonical/1594651635/686/)
+![website screenshot](website_screen.png)
 
 
 The Star Burger network consists of several restaurants operating under a single franchise. All restaurants have the same menu and the same prices. Simply choose a meal from the menu on the website and specify an address for delivery. We will find the restaurant nearest to you, will cook your food for you and will deliver it to you.
@@ -127,9 +127,17 @@ npm install --dev
 
 Install [Parcel](https://parceljs.org/), a web application packer, which is similar to [Webpack](https://webpack.js.org/), but requires no setting up:
 
-```sh
-npm install -g parcel@latest  # понадобятся права администратора `sudo`
+```sudo sh
+npm install -g parcel@latest
 ```
+
+or
+
+```sudo sh
+npm install -g parcel@2.0.0-beta.2
+```
+
+in the event that the front-end is not successfully accembled by the subsequent command.
 
 You need the second version of Parcel. Make sure that `parcel` is installed and check its version in the command line:
 
@@ -150,9 +158,7 @@ Once done, the console will output:
 ✨  Built in 10.89s
 ```
 
-Now if you go to [http://127.0.0.1:8000/](http://127.0.0.1:8000/), then, instead of a blank page, you should see this:
-
-![](https://dvmn.org/filer/canonical/1594651900/687/)
+Now if you go to [http://127.0.0.1:8000/](http://127.0.0.1:8000/), then, instead of a blank page, you should see the website front page, albeit not containing any products, which need to be added via the Django admin panel accessible by [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin).
 
 ## Automatic deploy
 
@@ -184,4 +190,4 @@ Set up the backend: create the file `.env` in the directory `star_burger/` with 
   `POSTGRES="postgres://starburger:password@localhost/starburger"`
 - `ROLLBAR_KEY` — your API key for Rollbar.
 - `SECRET_KEY` — the project secret key for Django. It is responsible for the encryption on the website. For example, it is used to encrypt all passwords on your website. It is not recommended to use the default value, **update it to your own value**.
-- `YANDEX_GEOCODER_API_KEY` - the API-key for the Yandex Geocoder service. The service is used for calculating of the distances between the restaurants and their clients. The key can be obtained at [this address](https://developer.tech.yandex.ru/).
+- `GEOCODER_API_KEY` - the API-key for the Geocoder service. The service is used for calculating of the distances between the restaurants and their clients.
