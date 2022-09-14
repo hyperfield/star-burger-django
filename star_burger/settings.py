@@ -80,11 +80,12 @@ WSGI_APPLICATION = 'star_burger.wsgi.application'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-DATABASES = {}
-DATABASES['default'] = dj_database_url.parse(
-    env.str("POSTGRES"),
-    conn_max_age=600
-    )
+DATABASES = {
+    'default': dj_database_url.parse(
+    	env.str("POSTGRES"),
+    	conn_max_age=600
+    ),
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
