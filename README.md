@@ -4,6 +4,7 @@ This is a website of the restaurant chain Star Burger. Here one can order suprem
 
 ![website screenshot](website_screen.png)
 
+The live website is available [here](https://starburger.twilightparadox.com/).
 
 The Star Burger network consists of several restaurants operating under a single franchise. All restaurants have the same menu and the same prices. Simply choose a meal from the menu on the website and specify an address for delivery. We will find the restaurant nearest to you, will cook your food for you and will deliver it to you.
 
