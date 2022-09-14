@@ -129,7 +129,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 YANDEX_GEOCODER_API_KEY = env.str('YANDEX_GEOCODER_API_KEY')
 
 ROLLBAR = {
-    'access_token': env.str('ROLLBAR_KEY'),
+    'access_token': env.str('ROLLBAR_KEY', 'None'),
     'environment': 'development' if DEBUG else 'production',
     'root': BASE_DIR,
     'host': 'django-serv',
