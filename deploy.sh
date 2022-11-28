@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-if !(git pull origin main && [ ! -d "venv" ] && [ python -m venv venv ] && \
-   [ source venv/bin/activate ] && [ pip install -r requirements.txt ] && \
-   [ python manage.py migrate ] && [ npm ci --dev ] && \
-   [ ./node_modules/.bin/parcel watch bundles-src/index.js --dist-dir bundles --public-url="./" ] \
-    && [ python manage.py collectstatic ] && [ systemctl restart star-burger ]);
+if !(git pull origin main && ([ ! -d "venv" ] || python -m venv venv) && \
+   source venv/bin/activate && pip install -r requirements.txt && \
+   python manage.py migrate && npm ci --dev && \
+   ./node_modules/.bin/parcel watch bundles-src/index.js --dist-dir bundles --public-url="./" \
+    && python manage.py collectstatic ] && systemctl restart star-burger);
 then
   exit_code=$?
   echo "Something went wrong: exit code $exit_code" >&2
