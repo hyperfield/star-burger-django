@@ -139,6 +139,7 @@ dmypy.json
 # Database dumps and backup files
 *.json
 *.bak
+*.old
 
 # Pyre type checker
 .pyre/
