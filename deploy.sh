@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-if !(git pull && [ ! -d "venv" ] && [ python -m venv venv ] && \
+if !(git pull origin main && [ ! -d "venv" ] && [ python -m venv venv ] && \
    [ source venv/bin/activate ] && [ pip install -r requirements.txt ] && \
    [ python manage.py migrate ] && [ npm ci --dev ] && \
    [ ./node_modules/.bin/parcel watch bundles-src/index.js --dist-dir bundles --public-url="./" ] \
