@@ -3,8 +3,8 @@ set -e
 
 if !(git pull origin main && ([ -d "venv" ] || python3 -m venv venv) && \
    source venv/bin/activate && pip install -r requirements.txt && \
-   python manage.py migrate && npm ci --dev && \
-   ./node_modules/.bin/parcel watch bundles-src/index.js --dist-dir bundles --public-url="./" \
+   python manage.py migrate && npm install --dev && npm install -g parcel@2.0.0-beta.2 && \
+   ./node_modules/.bin/parcel build bundles-src/index.js --dist-dir bundles --public-url="./" \
     && python manage.py collectstatic ] && systemctl restart star-burger);
 then
   exit_code=$?
