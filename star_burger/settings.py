@@ -81,7 +81,7 @@ MEDIA_URL = '/media/'
 
 DATABASES = {
     'default': dj_database_url.parse(
-    	env.str("POSTGRES"),
+    	env.str("DB_1"),
     	conn_max_age=600
     ),
 }
