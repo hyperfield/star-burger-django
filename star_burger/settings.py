@@ -81,8 +81,8 @@ MEDIA_URL = '/media/'
 
 DATABASES = {
     'default': dj_database_url.parse(
-    	env.str("DB_1"),
-    	conn_max_age=600
+        env.str("DEFAULT_DB"),
+        conn_max_age=600
     ),
 }
 
