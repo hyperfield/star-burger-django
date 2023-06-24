@@ -130,7 +130,7 @@ YANDEX_GEOCODER_API_KEY = env.str('YANDEX_GEOCODER_API_KEY')
 
 ROLLBAR = {
     'access_token': env.str('ROLLBAR_KEY', 'None'),
-    'environment': 'development' if DEBUG else 'production',
+    'environment': env.str('ENVIRONMENT', 'debug'),
     'root': BASE_DIR,
     'host': 'django-serv',
 }
